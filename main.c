@@ -33,15 +33,23 @@ char *get_input_line()
 
 char **parsing_line(char **line)
 {
-	return ({"/bin/ls", "-l", "/usr/", NULL});
+	/* char *matrix[] = {"/bin/ls", "-l", "/usr/", NULL}; */
+
+	return (line);
 }
 
 int execute(char **command)
 {
-	if (execve(*command, command, NULL) == -1)
-	{
-		perror("Error:");
-	}
+	pid_t exec_command;
+
+	exec_command = fork();
+
+	if (exec_command == 0)
+		if (execve(*command, command, NULL) == -1)
+		{
+			return (0);
+		}
+	return (1);
 }
 
 
@@ -61,7 +69,10 @@ int main(int argc, char *argv[])
 			break;
 
 		command = parsing_line(&line);
-		result = execute(command);
+
+		char *matrix[] = {"/bin/ls", "-l", "/usr/", NULL};
+		
+		result = execute(matrix);
 
 		if (!result)
 			printf("Error ocurred");
