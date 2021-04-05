@@ -1,100 +1,61 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+#include "header.h"
 
-#define BUFFER 20
-
-char *get_input_line()
+int main(__attribute__ ((__unused__)) int argc,
+	 __attribute__ ((__unused__)) char *argv[])
 {
-/*
- * Falta implementar el Ctrl-D, leer sobre signals,
- * retornar cantidad de letras y mapear "nada" a 0 y retorna -1.
-*/
-	char *line, tmp[BUFFER + 1];
-	ssize_t char_read;
-	int i, i_tmp;
+	pid_t child_id;
+	unsigned int counter;
+	char *line;
+	char **command;
+	int status;
 
-	i = i_tmp = 1;
+	counter = 0;
 	line = NULL;
-	char_read = BUFFER;
+	command = NULL;
 
-	while (char_read % BUFFER == 0)
+	line = get_input_line(line);
+	command = parse_line(command, line);
+
+	child_id = fork();
+	if (child_id == -1)
 	{
-		for (i_tmp = 0; i_tmp < BUFFER + 1; i_tmp++)
-			tmp[i_tmp] = '\0';
-		char_read = read(STDIN_FILENO, tmp, BUFFER);
-
-		line = realloc(line, sizeof(*line) * BUFFER * i++);
-		strcat(line, tmp);
+		perror("Error:");
+		return (1);
 	}
-	return (line);
-}
-
-char **parsing_line(char **line)
-{
-	/* char *matrix[] = {"/bin/ls", "-l", "/usr/", NULL}; */
-
-	return (line);
-}
-
-int execute(char **command)
-{
-	pid_t exec_command;
-
-	exec_command = fork();
-
-	if (exec_command == 0)
-		if (execve(*command, command, NULL) == -1)
-		{
-			return (0);
-		}
-	return (1);
-}
-
-
-int main(int argc, char *argv[])
-{
-	/** Pendiente, pasar como argv el comando **/
-	char *line = NULL, **command;
-	int result, i;
-
-	while (1)
+	if (child_id == 0)
 	{
-		write(STDOUT_FILENO, "$ ", 3);
-
-		line = get_input_line();
-
-		if (*line == EOF || strcmp(line, "exit\n") == 0)
-			break;
-
-		command = parsing_line(&line);
-
-		char *matrix[] = {"/bin/ls", "-l", "/usr/", NULL};
-		
-		result = execute(matrix);
-
-		if (!result)
-			printf("Error ocurred");
+		/* printf("Ejecutando comando\n"); */
+		if (execve(command[0], command, NULL) == -1)
+			perror("Error");
 	}
+	else
+		wait(&status); /* printf("Ejecutado, fin\n"); */
 
+	/* FREEEEEEEE */
+	counter = 0;
+	while (command[counter] != NULL)
+		free(command[counter]), counter += 1;
 	free(line);
-	return (0);
+	free(command);
+
+	exit(EXIT_SUCCESS);
 }
 
-/* int main(void) */
-/* 	{ */
-/* 		char *line = NULL; */
-/* 		size_t len = 0; */
-/* 		ssize_t read; */
-
-/* 		while ((read = getline(&line, &len, stdin)) != -1) { */
-/* 			printf("Retrieved line of length %zu :", read); */
-/* 			printf("%s\n", line); */
-/* 		} */
-/* 		printf("Retrieved line of length %ld :", read); */
-/* 		printf("%x\n", line[0]); */
-
-/* 		free(line); */
-/* 		return (0); */
-/* 	} */
+/*
+ * PENDIENTES:
+ * 1. Builtin env, exit y PATH.
+ * 2. if (malloc == NULL).
+ * 3. Manejo de errores adecuado, y exit codes.
+ * 4. getline
+ * 5. arguments for exit.
+ * 6. Evitar Ctrl-C => SIGNALS.
+ * 7. setenv y unsetenv.
+ * 8. cd
+ * 9. ;, && y ||
+ * 10. alias.
+ * 11. reemplazo de variables: $? y $$
+ * 12. comentarios (#).
+ * 13. help builtin.
+ * 14. history.
+ * 15. input a script.
+ */
