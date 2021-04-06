@@ -1,5 +1,11 @@
 #include "header.h"
 
+/**
+ * get_input_line - Get one line from stdin (until '\n')
+ * @line: The pointer to the future sentence.
+ *
+ * Return: The input line stored.
+ */
 char *get_input_line(char *line)
 {
 	size_t line_size;
@@ -11,12 +17,19 @@ char *get_input_line(char *line)
 
 	/* if (char_read != -1) */
 	/* { */
-	/* 	printf("Line with length %lu = %s", char_read, line); */
+	/* printf("Line with length %lu = %s", char_read, line); */
 	/* } */
 
 	return (line);
 }
 
+/**
+ * parse_line - Parses a sentence into tokens, its delimiter being ' '
+ * @command: The pointer to the array of strings of the future parsed sentence.
+ * @line: The input line stored.
+ *
+ * Return: The parsed sentence.
+ */
 char **parse_line(char **command, char *line)
 {
 	/* CHECK MALLOC */
@@ -44,14 +57,14 @@ char **parse_line(char **command, char *line)
 			while (line[counter] != ' ' && line[counter] != '\n' &&
 			       line[counter] != '\0')
 				letters += 1, counter++;
+
 			command[words] = malloc(sizeof(**command) * letters + 1);
 
 			counter = 0;
 			while (*line != ' ' && *line != '\n' && *line != '\0')
-				command[words][counter] = *line, line++, counter++;
+				command[words][counter++] = *line++;
 
-			command[words][counter] = '\0';
-			words++;
+			command[words++][counter] = '\0';
 		}
 		else
 			line++;

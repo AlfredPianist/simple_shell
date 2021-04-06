@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "header.h"
 
 /**
  * _realloc - reallocates memory depending on its new size and initializes
@@ -53,13 +53,14 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	return (p_realloc);
 }
 
-void print_memory_hex(char *buffer, unsigned long int buffer_size)
+void free_all(char *line, char **command)
 {
-	unsigned long int counter;
+	unsigned int counter;
 
 	counter = 0;
+	while (command[counter] != NULL)
+		free(command[counter++]);
 
-	for (counter = 0; counter < buffer_size; counter++)
-		printf("%.2x ", buffer[counter]);
-	printf("\n");
+	free(command);
+	free(line);
 }

@@ -29,16 +29,41 @@ typedef enum boolean_e
 	TRUE
 } boolean;
 
-typedef struct token_s
+typedef struct builtin_s
 {
-	char *token_str;
-	struct token_s *next;
-} token_t;
+	char *builtin_n;
+	int (*builtin_f)(char **command);
+} builtin_t;
 
 int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[]);
 
+/* Input */
 char *get_input_line(char *line);
 char **parse_line(char **command, char *line);
+
+/* Process */
+int select_exec(builtin_t *builtins, char **command);
+int execute(char **command);
+
+/* Memory management */
+void free_all(char *line, char **command);
+
+/* String manipulation */
+int _strcmp(char *str1, char *str2);
+
+/* Builtins */
+int exit_builtin(char **commands);
+int env_builtin(__attribute__ ((__unused__)) char **commands);
+int setenv_builtin(__attribute__ ((__unused__)) char **commands);
+int unsetenv_builtin(__attribute__ ((__unused__)) char **commands);
+int help_builtin(__attribute__ ((__unused__)) char **commands);
+int history_builtin(__attribute__ ((__unused__)) char **commands);
+int cd_builtin(__attribute__ ((__unused__)) char **commands);
+int alias_builtin(__attribute__ ((__unused__)) char **commands);
+
+/* Misc */
+void print_memory_hex(char *buffer, unsigned long int buffer_size);
+void print_parse(char **command);
 
 #endif
