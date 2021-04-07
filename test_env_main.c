@@ -12,12 +12,13 @@ char **copyEnv(char **env);
 int main(int ac, char **av, char **env_org)
 {
         int i = 0;
+
+	printf("copying env:\n");
         char **env = copyEnv(env_org);
 
-        printenv(env);
-        printf("----------------------------\n");
+        // printenv(env);
         _setenv(env, "NEWVAR1", "asdasdojieijoijowejiewrwer", 1);
-        _setenv(env, "NEWVAR2", "asdasdojieijoijowejiewrwer", 1);
+        //_setenv(env, "NEWVAR2", "asdasdojieijoijowejiewrwer", 1);
         // _setenv(env, "NEWVAR3", "asdasdojieijoijowejiewrwer", 1);
         // _setenv(env, "NEWVAR4", "asdasdojieijoijowejiewrwer", 1);
         // _setenv(env, "NEWVAR5", "asdasdojieijoijowejiewrwer", 1);
@@ -27,10 +28,10 @@ int main(int ac, char **av, char **env_org)
         // _setenv(env, "NEWVAR9", "asdasdojieijoijowejiewrwer", 1);
         // _setenv(env, "NEWVAR10", "asdasdojieijoijowejiewrwer", 1);
         printenv(env);
-
+	printf("freeing copy env:\n");
         while(env[i])
         {
-                printf("%p => %s\n", env[i], env[i]);
+               // printf("%p => %s\n", env[i], env[i]);
                 free(env[i]), i++;
         }
 
@@ -47,7 +48,7 @@ char **copyEnv(char **env)
         while(env[i])
                 i++;
         
-        newEnv = malloc(sizeof(char*) * i);
+        newEnv = malloc(sizeof(char*) * (i + 1));
 
         for(i = 0; env[i]; i++)
         {
@@ -58,10 +59,10 @@ char **copyEnv(char **env)
                 // newEnv[i][j] = 0;
                 memcpy(newEnv[i], env[i], strlen(env[i]));
                 
-                printf("cpy=%p, org=%p\n", newEnv[i], env[i]);
+               // printf("cpy=%p, org=%p\n", newEnv[i], env[i]);
         }
 
-       // newEnv[i] = 0;
+        newEnv[i] = NULL;
 
         return newEnv;
 }
@@ -70,7 +71,7 @@ int _setenv(char **env, char *varN, char* varV, int overwrite)
 {
         int i;
         int buff_size = strlen(varN) + strlen(varV) + 2;
-        char *buff = malloc(buff_size * sizeof(char));
+        char *buff = calloc(buff_size, sizeof(char));
         
         strcat(buff, varN);
         strcat(buff, "=");
@@ -83,10 +84,10 @@ int _setenv(char **env, char *varN, char* varV, int overwrite)
                         env[i] = buff;
                         return (1);
                 }
-        env = realloc(env, sizeof(char *) * i);
+        env = realloc(env, sizeof(char *) * (i + 2));
 
         env[i] = buff;
-        env[i + 1] = 0;
+        env[i + 1] = NULL;
         return (1);
 }
 
