@@ -35,12 +35,9 @@ typedef struct builtin_s
 	int (*builtin_f)(char **command);
 } builtin_t;
 
-int main(__attribute__ ((__unused__)) int argc,
-	 __attribute__ ((__unused__)) char *argv[]);
-
 /* Input */
-char *get_input_line(char *line);
-char **parse_line(char **command, char *line);
+int get_input_line(char **line);
+char **parse_line(char **command, char *line, char del);
 
 /* Process */
 int select_exec(builtin_t *builtins, char **command);
@@ -65,5 +62,10 @@ int alias_builtin(__attribute__ ((__unused__)) char **commands);
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);
 void print_parse(char **command);
+
+/* Environment */
+void printenv(char **env);
+int _setenv(char ***env, char *varN, char *varV);
+char **copyEnv(char **env);
 
 #endif

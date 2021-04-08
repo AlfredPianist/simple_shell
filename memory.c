@@ -58,9 +58,14 @@ void free_all(char *line, char **command)
 	unsigned int counter;
 
 	counter = 0;
-	while (command[counter] != NULL)
-		free(command[counter++]);
 
-	free(command);
-	free(line);
+	if (command && command[counter])
+	{
+		while (command[counter] != NULL)
+			free(command[counter++]);
+		free(command);
+	}
+
+	if (line)
+		free(line);
 }
