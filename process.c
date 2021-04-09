@@ -4,9 +4,6 @@ int select_exec(builtin_t *builtins, char **command)
 {
 	unsigned int i;
 
-	if (command[0] == NULL)
-		return (0);
-
 	for (i = 0; builtins[i].builtin_n != NULL; i++)
 		if (strcmp(command[0], builtins[i].builtin_n) == 0)
 			return (builtins[i].builtin_f(command));
@@ -54,4 +51,3 @@ int execute(char **command)
 	}
 	return (1);
 }
-

@@ -15,11 +15,6 @@ int get_input_line(char **line)
 
 	char_read = getline(line, &line_size, stdin);
 
-	/* if (char_read != -1) */
-	/* { */
-	/* printf("Line with length %lu = %s", char_read, line); */
-	/* } */
-
 	return (char_read);
 }
 

@@ -5,9 +5,9 @@ int main(__attribute__ ((__unused__)) int argc,
 	char **environment)
 {
 	char *line = NULL, **command = NULL, **env = NULL, **path;
-	int exec_status;
 	ssize_t char_read = 0, i;
 	struct stat stat_buff;
+	int exec_status = 0;
 	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
 				 {"history", history_builtin}, {"env", env_builtin},
 				 {"setenv", setenv_builtin}, {"unsetenv", unsetenv_builtin},
@@ -18,11 +18,18 @@ int main(__attribute__ ((__unused__)) int argc,
 	path = parse_line(path, getEnvVar("PATH", env), ':');
 
 	do {
+		/* Interactive mode */
 		if (isatty(STDIN_FILENO))
 		{
 			write(STDOUT_FILENO, "($) ", 5);
-			char_read = get_input_line(&line);			
+			char_read = get_input_line(&line);
+			if (char_read == EOF)
+			{
+				free(line);
+				break;
+			}
 		}
+		/* Non-interactive mode */
 		else
 		{
 			char_read = get_input_line(&line);
@@ -61,7 +68,7 @@ int main(__attribute__ ((__unused__)) int argc,
                 free_all(line, command);
 	} while (char_read != EOF);
 
-	free_all(0, env);
+	free_all(NULL, env);
 	exit(exec_status);
 }
 
@@ -72,7 +79,7 @@ int main(__attribute__ ((__unused__)) int argc,
  *    history, cd y alias.
  * 2. if (malloc == NULL).
  * 3. Manejo de errores adecuado, y exit codes.
- * 4. getline.
+]* 4. getline.
  * 6. Evitar Ctrl-C => SIGNALS.
  * 9. ; && y ||: ampliar parse para setear estas condiciones.
  * 10. alias.

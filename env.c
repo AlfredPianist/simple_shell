@@ -26,7 +26,7 @@ int _setenv(char ***env, char *varN, char *varV)
 {
 	int i;
 	int buff_size = strlen(varN) + strlen(varV) + 2;
-	char *buff = calloc(buff_size, sizeof(*buff));
+	char *buff = malloc(sizeof(*buff) * buff_size);
 
 	strcat(buff, varN);
 	strcat(buff, "=");
