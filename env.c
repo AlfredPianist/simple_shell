@@ -48,6 +48,17 @@ int _setenv(char ***env, char *varN, char *varV)
 	return (1);
 }
 
+char *getEnvVar(char *var, char **env)
+{
+        int i = 0;
+
+        for (i = 0; env && env[i]; i++)
+		if (strncmp(env[i], var, strlen(var)) == 0)
+			return (env[i] + strlen(var) + 1);
+
+	return (0);
+}
+
 void printenv(char **env)
 {
 	int i = 0;

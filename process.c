@@ -14,6 +14,14 @@ int select_exec(builtin_t *builtins, char **command)
 	return (execute(command));
 }
 
+char *which(char *PATH, char *command)
+{
+        struct stat stat_buff;
+
+        stat(command, &stat_buff);
+
+}
+
 /**
  * execute - Executes a command on a child process.
  * @command: The argument vector (parsed line).

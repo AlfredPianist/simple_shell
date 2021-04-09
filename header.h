@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/stat.h>
 
 /* Definition of booleans TRUE and FALSE */
 #ifdef TRUE
@@ -67,5 +68,5 @@ void print_parse(char **command);
 void printenv(char **env);
 int _setenv(char ***env, char *varN, char *varV);
 char **copyEnv(char **env);
-
+char *getEnvVar(char *, char **);
 #endif
