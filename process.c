@@ -1,22 +1,45 @@
 #include "header.h"
 
-int select_exec(builtin_t *builtins, char **command)
+int select_exec(builtin_t *builtins, char **command, char **env)
 {
 	unsigned int i;
+	struct stat stat_buff;
+	unsigned int size_tmp;
+	char *tmp = NULL, **path = NULL;
 
 	for (i = 0; builtins[i].builtin_n != NULL; i++)
 		if (strcmp(command[0], builtins[i].builtin_n) == 0)
-			return (builtins[i].builtin_f(command));
+			return (builtins[i].builtin_f(command, &env));
 
-	return (execute(command));
-}
+	path = parse_line(path, getEnvVar("PATH", env), ':');
 
-char *which(char *PATH, char *command)
-{
-        struct stat stat_buff;
+	for (i = 0; path[i]; i++)
+        {
+		size_tmp = strlen(command[0]) + strlen(path[i]) + 2;
+                tmp = malloc(sizeof(char) * size_tmp);
+                strcpy(tmp, path[i]);
+                strcat(tmp, "/");
+                strcat(tmp, command[0]);
+                tmp[size_tmp - 1] = 0;
 
-        stat(command, &stat_buff);
+                if (stat(tmp, &stat_buff) == 0)
+                {
+                     	free(command[0]);
+			free_all(0, path);
+                        command[0] = tmp;
+                        return (execute(command));
+                }
+                free(tmp);
+	}
 
+	free_all(0, path);
+
+	if (stat(command[0], &stat_buff) == 0)
+	{
+		return (execute(command));
+	}
+	write(STDERR_FILENO, "archivo no encontrado\n", 22);
+	return (-1);
 }
 
 /**

@@ -30,10 +30,16 @@ typedef enum boolean_e
 	TRUE
 } boolean;
 
+typedef struct list_s
+{
+        char *string;
+        list_s *next;
+} list_s;
+
 typedef struct builtin_s
 {
 	char *builtin_n;
-	int (*builtin_f)(char **command);
+	int (*builtin_f)(char **command, char ***env);
 } builtin_t;
 
 /* Input */
@@ -41,7 +47,7 @@ int get_input_line(char **line);
 char **parse_line(char **command, char *line, char del);
 
 /* Process */
-int select_exec(builtin_t *builtins, char **command);
+int select_exec(builtin_t *builtins, char **command, char **path);
 int execute(char **command);
 
 /* Memory management */
@@ -51,14 +57,14 @@ void free_all(char *line, char **command);
 int _strcmp(char *str1, char *str2);
 
 /* Builtins */
-int exit_builtin(char **commands);
-int env_builtin(__attribute__ ((__unused__)) char **commands);
-int setenv_builtin(__attribute__ ((__unused__)) char **commands);
-int unsetenv_builtin(__attribute__ ((__unused__)) char **commands);
-int help_builtin(__attribute__ ((__unused__)) char **commands);
-int history_builtin(__attribute__ ((__unused__)) char **commands);
-int cd_builtin(__attribute__ ((__unused__)) char **commands);
-int alias_builtin(__attribute__ ((__unused__)) char **commands);
+int exit_builtin(char **commands, __attribute__ ((__unused__)) char **env);
+int env_builtin(__attribute__ ((__unused__)) char **commands, char ***env);
+int setenv_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char ***env);
+int unsetenv_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
+int help_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
+int history_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
+int cd_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
+int alias_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
 
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);
@@ -67,6 +73,7 @@ void print_parse(char **command);
 /* Environment */
 void printenv(char **env);
 int _setenv(char ***env, char *varN, char *varV);
-char **copyEnv(char **env);
+list_s *copyEnv(char **env);
 char *getEnvVar(char *, char **);
+
 #endif

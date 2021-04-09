@@ -1,6 +1,11 @@
 #include "header.h"
 
-int exit_builtin(char **commands)
+/**
+ * exit_builtin - close shell
+ * @commands: command exit and his params
+ * Return: status of the exit
+*/
+int exit_builtin(char **commands, __attribute__ ((__unused__)) char **env)
 {
 	if (commands[1] != NULL)
 	{
@@ -9,23 +14,39 @@ int exit_builtin(char **commands)
 	}
 	return (1);
 }
-
-int help_builtin(__attribute__ ((__unused__)) char **commands)
+/**
+ * help_builtin - display the help file of a command
+ * @commands: command help and his params
+ * Return: -
+*/
+int help_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
-
-int history_builtin(__attribute__ ((__unused__)) char **commands)
+/**
+ * history_builtin - display the history file
+ * @commands: command history and his params
+ * Return: -
+*/
+int history_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
-
-int cd_builtin(__attribute__ ((__unused__)) char **commands)
+/**
+ * cd_builtin - change the current directory of the shell
+ * @commands: command cd and his params
+ * Return: -
+*/
+int cd_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
-
-int alias_builtin(__attribute__ ((__unused__)) char **commands)
+/**
+ * alias_builtin - create an alias of a command
+ * @commands: command alias and his params
+ * Return: -
+*/
+int alias_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }

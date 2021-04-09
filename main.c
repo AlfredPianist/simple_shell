@@ -4,18 +4,22 @@ int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
 	char **environment)
 {
-	char *line = NULL, **command = NULL, **env = NULL, **path;
+	char *line = NULL, **command = NULL, **path;
 	ssize_t char_read = 0, i;
 	struct stat stat_buff;
 	int exec_status = 0;
-	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
-				 {"history", history_builtin}, {"env", env_builtin},
-				 {"setenv", setenv_builtin}, {"unsetenv", unsetenv_builtin},
-				 {"cd", cd_builtin}, {"alias", alias_builtin},
-				 {NULL, NULL} };
+	list_s env;
+
+	builtin_t builtins[] = {
+	/*	{"exit", exit_builtin}, {"help", help_builtin}, */
+	/*	{"history", history_builtin}, */
+		{"env", env_builtin}, 
+		{"setenv", setenv_builtin},
+	/*	{"unsetenv", unsetenv_builtin},*/
+	/*	{"cd", cd_builtin}, {"alias", alias_builtin}, */
+		{NULL, NULL} };
 
 	env = copyEnv(environment);
-	path = parse_line(path, getEnvVar("PATH", env), ':');
 
 	do {
 		/* Interactive mode */
@@ -41,30 +45,7 @@ int main(__attribute__ ((__unused__)) int argc,
 			write(STDOUT_FILENO, "($) ", 5);
 		}
 		command = parse_line(command, line, ' ');
-
-		if (stat(command[0], &stat_buff) == 0)
-			printf("this is a exactly rute\n");
-		else
-		{
-			for (i = 0; path[i]; i++)
-			{
-				unsigned int size_tmp = strlen(command[0]) + strlen(path[i]) + 2;
-				char *tmp = malloc(sizeof(char) * size_tmp);
-				strcpy(tmp, path[i]);
-				strcat(tmp, "/");
-				strcat(tmp, command[0]);
-				tmp[size_tmp - 1] = 0;
-
-				if (stat(tmp, &stat_buff) == 0)
-					printf("comando encontrado en el path\n");
-				
-				printf("%s\n", tmp);
-				free(tmp);
-			}
-			
-		}
-
-       	        exec_status = select_exec(builtins, command);
+       	        exec_status = select_exec(builtins, command, env);
                 free_all(line, command);
 	} while (char_read != EOF);
 
