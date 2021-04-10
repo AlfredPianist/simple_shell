@@ -32,9 +32,9 @@ typedef enum boolean_e
 
 typedef struct list_s
 {
-        char *string;
-        list_s *next;
-} list_s;
+	char *str;
+	struct list_s *next;
+} list_t;
 
 typedef struct builtin_s
 {
@@ -59,12 +59,18 @@ int _strcmp(char *str1, char *str2);
 /* Builtins */
 int exit_builtin(char **commands, __attribute__ ((__unused__)) char **env);
 int env_builtin(__attribute__ ((__unused__)) char **commands, char ***env);
-int setenv_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char ***env);
-int unsetenv_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
-int help_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
-int history_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
-int cd_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
-int alias_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env);
+int setenv_builtin(__attribute__ ((__unused__)) char **commands,
+		   __attribute__ ((__unused__)) char ***env);
+int unsetenv_builtin(__attribute__ ((__unused__)) char **commands,
+		     __attribute__ ((__unused__)) char **env);
+int help_builtin(__attribute__ ((__unused__)) char **commands,
+		 __attribute__ ((__unused__)) char **env);
+int history_builtin(__attribute__ ((__unused__)) char **commands,
+		    __attribute__ ((__unused__)) char **env);
+int cd_builtin(__attribute__ ((__unused__)) char **commands,
+	       __attribute__ ((__unused__)) char **env);
+int alias_builtin(__attribute__ ((__unused__)) char **commands,
+		  __attribute__ ((__unused__)) char **env);
 
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);
@@ -73,7 +79,7 @@ void print_parse(char **command);
 /* Environment */
 void printenv(char **env);
 int _setenv(char ***env, char *varN, char *varV);
-list_s *copyEnv(char **env);
+list_t *copyEnv(char **env);
 char *getEnvVar(char *, char **);
 
 #endif

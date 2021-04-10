@@ -5,46 +5,60 @@
  * @env: pointer to copy
  * Return: copy of the env, otherwise 0
  */
-list_s *copyEnv(char **env)
+list_t *copy_env(char **env)
 {
 	unsigned int i = 0, j = 0;
-	list_s *newEnv = malloc(sizeof(list_s));
+	list_t *env_list;
 
-        if (!newEnv)
-                return (0);
-
-	for (i = 0; env[i]; i++)
-		addNode(newEnv, env[i]);
-
-	return (newEnv);
-}
-void addNode(list_s *head, int idx, char *s)
-{
-	list_s *list = *head, *node = malloc(sizeof(list_s));
-
-	if (!node)
+	if (!env_list)
 		return (0);
 
-	node->n = n;
+	for (i = 0; env[i]; i++)
+		add_node(&env_list, env[i], i);
+
+	return (env_list);
+}
+
+void add_node(list_t **head, int idx, char *s)
+{
+	list_t *list, *node;
+
+	list = *head;
+
+	node = malloc(sizeof(*node));
+	if (!node)
+		return;
+
+	node->str = _realloc(node->str, 0, sizeof(node->str) * strlen(s) + 1);
+	if (!node->str)
+		return;
+	/* Check malloc */
+	strcpy(node->str, s);
+
+	if (*head == NULL)
+	{
+		node->next = NULL, *head = node;
+		return;
+	}
 
 	if (idx == 0)
 	{
-		node->next = *head;
-		*head = node;
-		return (node);
+		node->next = *head, *head = node;
+		return;
 	}
 
-	while (list && 1 < idx--)
-		if (list->next)
+	if (idx > 0)
+		while (list && 1 < idx--)
+			if (list->next)
+				list = list->next;
+			else
+				return;
+
+	if (idx == -1)
+		while (list)
 			list = list->next;
-		else
-			return (0);
 
-	node->next = list->next;
-	list->next = node;
-
-	return (node);
-
+	node->next = list->next, list->next = node;
 }
 /**
  * _setenv - create a new var in a in a double pointer environment
