@@ -4,22 +4,21 @@ int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
 	char **environment)
 {
-	char *line = NULL, **command = NULL, **path;
-	ssize_t char_read = 0, i;
+	char *line = NULL, **command = NULL;
+	ssize_t char_read = 0;
 	struct stat stat_buff;
 	int exec_status = 0;
-	list_s env;
-
+	list_t *env = NULL;
 	builtin_t builtins[] = {
 	/*	{"exit", exit_builtin}, {"help", help_builtin}, */
 	/*	{"history", history_builtin}, */
-		{"env", env_builtin}, 
+		{"env", env_builtin},
 		{"setenv", setenv_builtin},
-	/*	{"unsetenv", unsetenv_builtin},*/
+		{"unsetenv", unsetenv_builtin},
 	/*	{"cd", cd_builtin}, {"alias", alias_builtin}, */
 		{NULL, NULL} };
 
-	env = copyEnv(environment);
+	env = copy_env(environment);
 
 	do {
 		/* Interactive mode */
@@ -45,11 +44,11 @@ int main(__attribute__ ((__unused__)) int argc,
 			write(STDOUT_FILENO, "($) ", 5);
 		}
 		command = parse_line(command, line, ' ');
-       	        exec_status = select_exec(builtins, command, env);
-                free_all(line, command);
+		exec_status = select_exec(builtins, command, &env);
+		free_all(line, command);
 	} while (char_read != EOF);
 
-	free_all(NULL, env);
+	free_list(&env);
 	exit(exec_status);
 }
 

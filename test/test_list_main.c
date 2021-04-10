@@ -34,6 +34,20 @@ int main(void)
 	print_list(node);
 
 	printf("---------\n");
+	printf("Deletes at index:\n");
+	delete_node_at_index(&node, 0);
+	delete_node_at_index(&node, 5);
+	delete_node_at_index(&node, 2);
+	delete_node_at_index(&node, 6);
+	print_list(node);
+
+	printf("---------\n");
+	printf("Deletes at index error:\n");
+	delete_node_at_index(&node, 80);
+	delete_node_at_index(&node, -10);
+	print_list(node);
+
+	printf("---------\n");
 	printf("Frees list:\n");
 	free_list(&node);
 	print_list(node);

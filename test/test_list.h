@@ -14,6 +14,7 @@ typedef struct list_s
 list_t *add_node(list_t **head, int idx, char *s);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void print_list(list_t *head);
+int delete_node_at_index(list_t **head, unsigned int index);
 void free_list(list_t **head);
 
 #endif

@@ -1,6 +1,6 @@
 #include "header.h"
 
-int select_exec(builtin_t *builtins, char **command, char **env)
+int select_exec(builtin_t *builtins, char **command, list_t **env)
 {
 	unsigned int i;
 	struct stat stat_buff;
@@ -9,27 +9,26 @@ int select_exec(builtin_t *builtins, char **command, char **env)
 
 	for (i = 0; builtins[i].builtin_n != NULL; i++)
 		if (strcmp(command[0], builtins[i].builtin_n) == 0)
-			return (builtins[i].builtin_f(command, &env));
+			return (builtins[i].builtin_f(command, env));
 
-	path = parse_line(path, getEnvVar("PATH", env), ':');
+	path = parse_line(path, get_env_var("PATH", *env), ':');
 
 	for (i = 0; path[i]; i++)
-        {
+	{
 		size_tmp = strlen(command[0]) + strlen(path[i]) + 2;
-                tmp = malloc(sizeof(char) * size_tmp);
-                strcpy(tmp, path[i]);
-                strcat(tmp, "/");
-                strcat(tmp, command[0]);
-                tmp[size_tmp - 1] = 0;
-
-                if (stat(tmp, &stat_buff) == 0)
-                {
-                     	free(command[0]);
+		tmp = malloc(sizeof(char) * size_tmp);
+		strcpy(tmp, path[i]);
+		strcat(tmp, "/");
+		strcat(tmp, command[0]);
+		tmp[size_tmp - 1] = 0;
+		if (stat(tmp, &stat_buff) == 0)
+		{
+			free(command[0]);
 			free_all(0, path);
-                        command[0] = tmp;
-                        return (execute(command));
-                }
-                free(tmp);
+			command[0] = tmp;
+			return (execute(command));
+		}
+		free(tmp);
 	}
 
 	free_all(0, path);

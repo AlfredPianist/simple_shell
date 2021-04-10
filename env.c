@@ -7,112 +7,93 @@
  */
 list_t *copy_env(char **env)
 {
-	unsigned int i = 0, j = 0;
+	unsigned int i;
 	list_t *env_list;
 
-	if (!env_list)
-		return (0);
-
+	env_list = NULL;
 	for (i = 0; env[i]; i++)
-		add_node(&env_list, env[i], i);
+		add_node(&env_list, i, env[i]);
 
 	return (env_list);
 }
 
-void add_node(list_t **head, int idx, char *s)
-{
-	list_t *list, *node;
-
-	list = *head;
-
-	node = malloc(sizeof(*node));
-	if (!node)
-		return;
-
-	node->str = _realloc(node->str, 0, sizeof(node->str) * strlen(s) + 1);
-	if (!node->str)
-		return;
-	/* Check malloc */
-	strcpy(node->str, s);
-
-	if (*head == NULL)
-	{
-		node->next = NULL, *head = node;
-		return;
-	}
-
-	if (idx == 0)
-	{
-		node->next = *head, *head = node;
-		return;
-	}
-
-	if (idx > 0)
-		while (list && 1 < idx--)
-			if (list->next)
-				list = list->next;
-			else
-				return;
-
-	if (idx == -1)
-		while (list)
-			list = list->next;
-
-	node->next = list->next, list->next = node;
-}
 /**
- * _setenv - create a new var in a in a double pointer environment
- * @env: direction of the double pointer env to modify
- * @varN: pointer var to modify or create in env
- * @varV: value of the pointer var to modify or create
- * Return: 1 if success, otherwise 0
+ * getEnvVar - Gets the value of an env variable.
+ * @var: Var to find in env.
+ * @env: The env singly-linked list.
+ * Return: value of the var found in env, otherwise NULL.
  */
-int _setenv(char ***env, char *varN, char *varV)
+char *get_env_var(char *var, list_t *env)
 {
 	int i;
-	int buff_size = strlen(varN) + strlen(varV) + 2;
-	char *buff = malloc(sizeof(*buff) * buff_size);
+	list_t *curr_node;
+
+	curr_node = env;
+	for (i = 0; curr_node; i++)
+	{
+		if (strncmp(curr_node->str, var, strlen(var)) == 0)
+			return (curr_node->str + strlen(var) + 1);
+		curr_node = curr_node->next;
+	}
+
+	return (NULL);
+}
+
+/**
+ * _setenv - Creates a new variable in the environment list.
+ * @env: The environment list.
+ * @varN: The variable's name.
+ * @varV: The variable's value.
+ *
+ * Return: 1 if success, otherwise 0
+ */
+int _setenv(list_t **env, char *varN, char *varV)
+{
+	int buff_size;
+	char *buff = NULL;
+	list_t *curr_node;
+
+	buff_size = strlen(varN) + strlen(varV) + 2;
+	buff = _realloc(buff, 0, sizeof(*buff) * buff_size);
+	if (!buff)
+		return (0);
 
 	strcat(buff, varN);
 	strcat(buff, "=");
 	strcat(buff, varV);
-	buff[buff_size - 1] = '\0';
 
-	for (i = 0; (*env)[i] != NULL; i++)
-	{
-		if (strncmp((*env)[i], varN, strlen(varN)) == 0)
+	for (curr_node = *env; curr_node; curr_node = curr_node->next)
+		if (strncmp(curr_node->str, varN, strlen(varN)) == 0)
 		{
-			(*env)[i] = buff;
+			free(curr_node->str);
+			curr_node->str = buff;
 			return (1);
 		}
-	}
-	*env = realloc(*env, sizeof(**env) * (i + 2));
-	(*env)[i] = buff;
-	(*env)[i + 1] = NULL;
+
+	add_node(env, -1, buff);
+	free(buff);
 
 	return (1);
 }
+
 /**
- * getEnvVar - get the vallue of a pointer var in double pointer env
- * @var: var to find in env
- * @env: double pointer environment to check
- * Return: value of the var finded in env, otherwise 0
+ * _unsetenv - clears a variable from the environment list.
+ * @env: The environment list.
+ * @varN: The variable's name.
+ * @varV: The variable's value.
+ *
+ * Return: 1 if success, otherwise 0
  */
-char *getEnvVar(char *var, char **env)
+int _unsetenv(list_t **env, char *varN)
 {
-        int i = 0;
+	list_t *curr_node;
+	unsigned int i;
 
-        for (i = 0; env && env[i]; i++)
-		if (strncmp(env[i], var, strlen(var)) == 0)
-			return (env[i] + strlen(var) + 1);
-
+	for (i = 0, curr_node = *env; curr_node; i++, curr_node = curr_node->next)
+		if (strncmp(curr_node->str, varN, strlen(varN)) == 0)
+		{
+			delete_node_at_index(env, i);
+			return (1);
+		}
 	return (0);
-}
-
-void printenv(char **env)
-{
-	int i = 0;
-
-	while (env[i] != NULL)
-		printf("%s\n", env[i++]);
 }

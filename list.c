@@ -1,47 +1,4 @@
-#include "test_list.h"
-
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
-{
-	void *p_realloc;
-	unsigned int counter;
-
-	p_realloc = NULL;
-	counter = 0;
-
-	if (new_size == old_size)
-		return (ptr);
-
-	if (new_size == 0 && ptr != NULL)
-	{
-		free(ptr);
-		return (NULL);
-	}
-
-	if (ptr == NULL)
-	{
-		ptr = malloc(new_size);
-		if (ptr == NULL)
-			return (NULL);
-		while (counter < new_size)
-			((char *) ptr)[counter++] = '\0';
-		return (ptr);
-	}
-
-	p_realloc = malloc(new_size);
-	if (p_realloc == NULL)
-		return (NULL);
-
-	for (counter = 0; counter < old_size && counter < new_size; counter++)
-		((char *) p_realloc)[counter] = ((char *) ptr)[counter];
-
-	if (new_size > old_size)
-		while (counter < new_size)
-			((char *) p_realloc)[counter++] = '\0';
-
-	free(ptr);
-
-	return (p_realloc);
-}
+#include "header.h"
 
 /**
  * add_node - Adds a node to any part of the list.
@@ -109,9 +66,6 @@ void print_list(list_t *head)
 
 	list = head;
 
-	if (head == NULL)
-		printf("NULL\n");
-
 	while (list)
 		printf("%s\n", list->str), list = list->next;
 }
@@ -124,7 +78,7 @@ void print_list(list_t *head)
  */
 int delete_node_at_index(list_t **head, unsigned int index)
 {
-	unsigned int i_count;
+unsigned int i_count;
 	list_t *current_node, *tmp;
 
 	i_count = 0;
