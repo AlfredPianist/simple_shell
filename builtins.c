@@ -5,12 +5,12 @@
  * @commands: command exit and his params
  * Return: status of the exit
 */
-int exit_builtin(char **commands, __attribute__ ((__unused__)) char **env)
+int exit_builtin(char **commands, __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1] != NULL)
 	{
 		/* Verificar si se introdujo un número */
-		return (atoi(commands[1]));
+		return (_atoi(commands[1]));
 	}
 	return (1);
 }

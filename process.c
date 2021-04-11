@@ -1,6 +1,6 @@
 #include "header.h"
 
-int select_exec(builtin_t *builtins, char **command, list_t **env)
+int select_exec(char **command, list_t **env)
 {
 	unsigned int i;
 	struct stat stat_buff;
@@ -9,10 +9,6 @@ int select_exec(builtin_t *builtins, char **command, list_t **env)
 
 	if (command[0] == 0)
 		return (-1);
-
-	for (i = 0; builtins[i].builtin_n != NULL; i++)
-		if (strcmp(command[0], builtins[i].builtin_n) == 0)
-			return (builtins[i].builtin_f(command, env));
 
 	path = parse_line(path, get_env_var("PATH", *env), ':');
 
@@ -38,9 +34,32 @@ int select_exec(builtin_t *builtins, char **command, list_t **env)
 
 	if (stat(command[0], &stat_buff) == 0)	
 		return (execute(command));
-	
-	write(STDERR_FILENO, "archivo no encontrado\n", 22);
+	write(STDERR_FILENO, "[SHELL_NAME]: ", 14);
+	write(STDERR_FILENO, "[CONTADOR]: ", 12);
+	write(STDERR_FILENO, command[0] , _strlen(command[0]));
+	write(STDERR_FILENO, ": not found\n", 12);
 	return (-1);
+}
+
+int _perror(int err, char *command_name)
+{
+	char msg[100];
+	char *errors[] = {
+		"not found",
+		"permision denied"
+	}
+	int errCodes[] = {
+		126,
+		127
+	}
+	_strcat(msg, "[SHELL_NAME]: ");
+	_strcat(msg, "[CONTADOR]: ");
+	_strcat(msg, command_name);
+	_strcat(msg, errors[err]);
+
+	write(STDERR_FILENO, msg , _strlen(msg));
+
+	return (errCodes[err]);
 }
 
 /**

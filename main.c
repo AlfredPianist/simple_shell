@@ -1,4 +1,7 @@
 #include "header.h"
+#include <stdlib.h>
+
+builtin_t *select_bulit(builtin_t *builtins, char *command_name);
 
 int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
@@ -7,16 +10,19 @@ int main(__attribute__ ((__unused__)) int argc,
 	char *line = NULL, **command = NULL, p[]= "($) ";
 	ssize_t char_read = 0;
 	struct stat stat_buff;
-	int exec_status = 0;
+	int exec_status = 0, contador = 0;
 	list_t *env = NULL;
 	builtin_t builtins[] = {
-	/*	{"exit", exit_builtin}, {"help", help_builtin}, */
+		{"exit", exit_builtin},
+	/*	{"help", help_builtin}, */
 	/*	{"history", history_builtin}, */
 		{"env", env_builtin},
 		{"setenv", setenv_builtin},
 		{"unsetenv", unsetenv_builtin},
 	/*	{"cd", cd_builtin}, {"alias", alias_builtin}, */
 		{NULL, NULL} };
+
+	builtin_t *f_built;
 
 	env = copy_env(environment);
 
@@ -28,12 +34,42 @@ int main(__attribute__ ((__unused__)) int argc,
                         break;
                 }
 		command = parse_line(command, line, ' ');
-		exec_status = select_exec(builtins, command, &env);
+
+		f_built = select_bulit(builtins, command[0]); 
+	
+		if (f_built->builtin_n != NULL)
+		{
+			exect_status = f_built->builtin_f(command, &env):
+		}
+		else
+		{
+			exec_status = select_exec(command, &env);
+		
+			if (exec_status == -1)
+			{
+				argv[0],contador, command[0];
+			}
+
+		}
+		contador++;
 		free_all(line, command);
+
+		if (f_built->builtin_n &&_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
+			break;
 	} while (char_read != EOF);
 
 	free_list(&env);
 	exit(exec_status);
+}
+
+builtin_t *select_bulit(builtin_t *builtins, char *command_name)
+{
+	int i;
+
+	for (i = 0; builtins[i].builtin_n != NULL; i++)
+                if (_strcmp(command_name, builtins[i].builtin_n) == 0)
+                        return &builtins[i];
+	return &builtins[i];
 }
 
 int prompt_line(char *p, char **line)

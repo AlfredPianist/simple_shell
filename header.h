@@ -47,7 +47,7 @@ int get_input_line(char **line);
 char **parse_line(char **command, char *line, char del);
 
 /* Process */
-int select_exec(builtin_t *builtins, char **command, list_t **env);
+int select_exec(char **command, list_t **env);
 int execute(char **command);
 
 /* Memory management */
@@ -62,7 +62,8 @@ int _atoi(char *str);
 int _strlen(char *str);
 
 /* Builtins */
-int exit_builtin(char **commands, __attribute__ ((__unused__)) char **env);
+int exit_builtin(__attribute__ ((__unused__)) char **commands, 
+		__attribute__ ((__unused__)) list_t **env);
 int env_builtin(__attribute__ ((__unused__)) char **commands,
 		__attribute__ ((__unused__)) list_t **env);
 int setenv_builtin(__attribute__ ((__unused__)) char **commands,
