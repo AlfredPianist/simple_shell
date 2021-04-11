@@ -56,13 +56,14 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 void free_all(char *line, char **command)
 {
 	unsigned int counter;
-
 	counter = 0;
 
-	if (command && command[counter])
+	if (command)
 	{
-		while (command[counter] != NULL)
-			free(command[counter++]);
+		if (command[counter])		
+			while (command[counter] != NULL)
+				free(command[counter++]);
+		
 		free(command);
 	}
 

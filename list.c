@@ -23,7 +23,7 @@ list_t *add_node(list_t **head, int idx, char *s)
 		return (NULL);
 
 	node->str = NULL;
-	node->str = _realloc(node->str, 0, sizeof(*(node->str)) * strlen(s) + 1);
+	node->str = _realloc(node->str, 0, sizeof(*(node->str)) * _strlen(s) + 1);
 	node->str = strcpy(node->str, s);
 
 	if (*head == NULL)
@@ -78,7 +78,7 @@ void print_list(list_t *head)
  */
 int delete_node_at_index(list_t **head, unsigned int index)
 {
-unsigned int i_count;
+	unsigned int i_count;
 	list_t *current_node, *tmp;
 
 	i_count = 0;

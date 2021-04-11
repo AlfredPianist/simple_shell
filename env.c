@@ -31,8 +31,8 @@ char *get_env_var(char *var, list_t *env)
 	curr_node = env;
 	for (i = 0; curr_node; i++)
 	{
-		if (strncmp(curr_node->str, var, strlen(var)) == 0)
-			return (curr_node->str + strlen(var) + 1);
+		if (_strncmp(curr_node->str, var, _strlen(var)) == 0)
+			return (curr_node->str + _strlen(var) + 1);
 		curr_node = curr_node->next;
 	}
 
@@ -53,7 +53,7 @@ int _setenv(list_t **env, char *varN, char *varV)
 	char *buff = NULL;
 	list_t *curr_node;
 
-	buff_size = strlen(varN) + strlen(varV) + 2;
+	buff_size = _strlen(varN) + _strlen(varV) + 2;
 	buff = _realloc(buff, 0, sizeof(*buff) * buff_size);
 	if (!buff)
 		return (0);
@@ -63,7 +63,7 @@ int _setenv(list_t **env, char *varN, char *varV)
 	strcat(buff, varV);
 
 	for (curr_node = *env; curr_node; curr_node = curr_node->next)
-		if (strncmp(curr_node->str, varN, strlen(varN)) == 0)
+		if (_strncmp(curr_node->str, varN, _strlen(varN)) == 0)
 		{
 			free(curr_node->str);
 			curr_node->str = buff;
@@ -90,7 +90,7 @@ int _unsetenv(list_t **env, char *varN)
 	unsigned int i;
 
 	for (i = 0, curr_node = *env; curr_node; i++, curr_node = curr_node->next)
-		if (strncmp(curr_node->str, varN, strlen(varN)) == 0)
+		if (_strncmp(curr_node->str, varN, _strlen(varN)) == 0)
 		{
 			delete_node_at_index(env, i);
 			return (1);

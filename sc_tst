@@ -1,0 +1,4 @@
+ls
+ls -la
+pwd
+ls -la /

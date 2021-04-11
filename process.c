@@ -7,6 +7,9 @@ int select_exec(builtin_t *builtins, char **command, list_t **env)
 	unsigned int size_tmp;
 	char *tmp = NULL, **path = NULL;
 
+	if (command[0] == 0)
+		return (-1);
+
 	for (i = 0; builtins[i].builtin_n != NULL; i++)
 		if (strcmp(command[0], builtins[i].builtin_n) == 0)
 			return (builtins[i].builtin_f(command, env));
@@ -15,12 +18,12 @@ int select_exec(builtin_t *builtins, char **command, list_t **env)
 
 	for (i = 0; path[i]; i++)
 	{
-		size_tmp = strlen(command[0]) + strlen(path[i]) + 2;
+		size_tmp = _strlen(command[0]) + _strlen(path[i]) + 2;
 		tmp = malloc(sizeof(char) * size_tmp);
-		strcpy(tmp, path[i]);
-		strcat(tmp, "/");
-		strcat(tmp, command[0]);
-		tmp[size_tmp - 1] = 0;
+		_strcpy(tmp, path[i]);
+		_strcat(tmp, "/");
+		_strcat(tmp, command[0]);
+
 		if (stat(tmp, &stat_buff) == 0)
 		{
 			free(command[0]);
@@ -33,10 +36,9 @@ int select_exec(builtin_t *builtins, char **command, list_t **env)
 
 	free_all(0, path);
 
-	if (stat(command[0], &stat_buff) == 0)
-	{
+	if (stat(command[0], &stat_buff) == 0)	
 		return (execute(command));
-	}
+	
 	write(STDERR_FILENO, "archivo no encontrado\n", 22);
 	return (-1);
 }
