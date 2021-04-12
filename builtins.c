@@ -6,6 +6,7 @@
  * Return: status of the exit
 */
 int exit_builtin(__attribute__ ((__unused__)) char **commands,
+		 __attribute__ ((__unused__)) list_t **alias,
 		 __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1] != NULL)
@@ -51,7 +52,13 @@ int cd_builtin(__attribute__ ((__unused__)) char **commands,
  * Return: -
 */
 int alias_builtin(__attribute__ ((__unused__)) char **commands,
-		  __attribute__ ((__unused__)) char **env)
+		  __attribute__ ((__unused__)) list_t **alias,
+		  __attribute__ ((__unused__)) list_t **env)
 {
+	if (commands[1] && commands[2])
+	{
+		add_to_list(env, commands[1], commands[2]);
+		return (1);
+	}
 	return (1);
 }

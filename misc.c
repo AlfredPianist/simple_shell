@@ -29,3 +29,12 @@ void print_parse(char **command)
 
 	printf("\n");
 }
+
+void print_parsed_line(char **command)
+{
+	int i;
+
+	printf("Parsed line:\n");
+	for (i = 0; command && command[i]; i++)
+		printf("%s\n", command[i]);
+}

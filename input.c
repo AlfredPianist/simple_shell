@@ -25,46 +25,23 @@ int get_input_line(char **line)
  *
  * Return: The parsed sentence.
  */
-char **parse_line(char **command, char *line, char del)
+char **parse_line(char **command, char *line, char *delims, char *ignore)
 {
-	/* CHECK MALLOC */
-	unsigned int words, letters, counter;
+	unsigned int words = 0, letters = 0, counter = 0;
 
-	words = letters = counter = 0;
+	words = count_tokens(line, delims, ignore);
+	command = NULL;
+	command = _realloc(command, 0, sizeof(*command) * (words + 1));
+	if (command == NULL)
+		return (NULL);
 
-	while (line[counter] != '\n' && line[counter] != '\0')
+	while (line && *line)
 	{
-		if (line[counter] != del &&
-		    (line[counter + 1] == del || line[counter + 1] == '\n' ||
-		     line[counter + 1] == '\0'))
-			words += 1;
-		counter++;
-	}
-
-	command = malloc(sizeof(*command) * (words + 1));
-
-	words = 0;
-	while (*line != '\n' && *line != '\0')
-	{
-		if (*line != del)
-		{
-			letters = counter = 0;
-			while (line[counter] != del && line[counter] != '\n' &&
-			       line[counter] != '\0')
-				letters += 1, counter++;
-
-			command[words] = malloc(sizeof(**command) * letters + 1);
-
-			counter = 0;
-			while (*line != del && *line != '\n' && *line != '\0')
-				command[words][counter++] = *line++;
-
-			command[words++][counter] = '\0';
-		}
+		if (!is_delim(*line, delims))
+			command[counter++] = new_token(&line, delims, ignore);
 		else
 			line++;
 	}
-	command[words] = NULL;
-
+	command[counter] = NULL;
 	return (command);
 }

@@ -50,12 +50,15 @@ typedef struct list_s
 typedef struct builtin_s
 {
 	char *builtin_n;
-	int (*builtin_f)(char **command, list_t **env);
+	int (*builtin_f)(char **command, list_t **alias, list_t **env);
 } builtin_t;
 
 /* Input */
 int get_input_line(char **line);
-char **parse_line(char **command, char *line, char del);
+char **parse_line(char **command, char *line, char *delims, char *ignore);
+int is_delim(char curr_char, char *delims);
+int count_tokens(char *line, char *delims, char *ignore);
+char *new_token(char **line, char *delims, char *ignore);
 
 /* Process */
 int select_exec(char **command, list_t **env);
@@ -72,32 +75,35 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
 int _atoi(char *s);
 char *_strcat(char *dest, char *src);
+char *_strncat(char *dest, char *src, int n);
 char *nstrcat(const int tot_strs, ...);
 
 /* Builtins */
-int exit_builtin(char **commands, list_t **env);
-int env_builtin(char **commands, list_t **env);
-int setenv_builtin(char **commands, list_t **env);
-int unsetenv_builtin(char **commands, list_t **env);
+int exit_builtin(char **commands, list_t **alias, list_t **env);
+int env_builtin(char **commands, list_t **alias, list_t **env);
+int setenv_builtin(char **commands, list_t **alias, list_t **env);
+int unsetenv_builtin(char **commands, list_t **alias, list_t **env);
 int help_builtin(char **commands, char **env);
 int history_builtin(char **commands, char **env);
 int cd_builtin(char **commands, char **env);
-int alias_builtin(char **commands, char **env);
+int alias_builtin(char **commands, list_t **alias, list_t **env);
 
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);
 void print_parse(char **command);
-
-/* Environment */
-list_t *copy_env(char **env);
-char *get_env_var(char *var, list_t *env);
-int _setenv(list_t **env, char *varN, char *varV);
-int _unsetenv(list_t **env, char *varN);
+void print_parsed_line(char **command);
 
 /* List manipulation */
 list_t *add_node(list_t **head, int idx, char *s);
 void print_list(list_t *head);
 int delete_node_at_index(list_t **head, unsigned int index);
 void free_list(list_t **head);
+
+char *get_var(char *var, list_t *env);
+int add_to_list(list_t **env, char *varN, char *varV);
+int del_from_list(list_t **env, char *varN);
+
+/* Environment */
+list_t *copy_env(char **env);
 
 #endif

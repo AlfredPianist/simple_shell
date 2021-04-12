@@ -9,7 +9,7 @@ int select_exec(char **command, list_t **env)
 	if (command[0] == 0)
 		return (-1);
 
-	path = parse_line(path, get_env_var("PATH", *env), ':');
+	path = parse_line(path, get_var("PATH", *env), ":\n", " ");
 
 	for (i = 0; path[i]; i++)
 	{

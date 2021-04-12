@@ -1,29 +1,13 @@
 #include "header.h"
 
 /**
- * copyEnv - create a copy of a double pointer var
- * @env: pointer to copy
- * Return: copy of the env, otherwise 0
- */
-list_t *copy_env(char **env)
-{
-	unsigned int i;
-	list_t *env_list;
-
-	env_list = NULL;
-	for (i = 0; env[i]; i++)
-		add_node(&env_list, i, env[i]);
-
-	return (env_list);
-}
-
-/**
- * getEnvVar - Gets the value of an env variable.
- * @var: Var to find in env.
+ * get_var - Gets the value of an env variable.
+ * @var: Variable to find in env.
  * @env: The env singly-linked list.
- * Return: value of the var found in env, otherwise NULL.
+ *
+ * Return: Value of the variable found in env, otherwise NULL.
  */
-char *get_env_var(char *var, list_t *env)
+char *get_var(char *var, list_t *env)
 {
 	int i;
 	list_t *curr_node;
@@ -40,21 +24,22 @@ char *get_env_var(char *var, list_t *env)
 }
 
 /**
- * _setenv - Creates a new variable in the environment list.
- * @env: The environment list.
+ * add_to_list - Adds a new variable to the list. If it exists, it will
+ *               replace its value.
+ * @list: The list.
  * @varN: The variable's name.
  * @varV: The variable's value.
  *
- * Return: 1 if success, otherwise 0
+ * Return: 1 if success, otherwise 0.
  */
-int _setenv(list_t **env, char *varN, char *varV)
+int add_to_list(list_t **list, char *varN, char *varV)
 {
 	char *buff = NULL;
 	list_t *curr_node;
 
 	buff = nstrcat(3, varN, "=", varV);
 
-	for (curr_node = *env; curr_node; curr_node = curr_node->next)
+	for (curr_node = *list; curr_node; curr_node = curr_node->next)
 		if (_strncmp(curr_node->str, varN, _strlen(varN)) == 0)
 		{
 			free(curr_node->str);
@@ -62,21 +47,21 @@ int _setenv(list_t **env, char *varN, char *varV)
 			return (1);
 		}
 
-	add_node(env, -1, buff);
+	add_node(list, -1, buff);
 	free(buff);
 
 	return (1);
 }
 
 /**
- * _unsetenv - clears a variable from the environment list.
- * @env: The environment list.
+ * del_from_list - Clears a variable from the list.
+ * @env: The list.
  * @varN: The variable's name.
  * @varV: The variable's value.
  *
  * Return: 1 if success, otherwise 0
  */
-int _unsetenv(list_t **env, char *varN)
+int del_from_list(list_t **env, char *varN)
 {
 	list_t *curr_node;
 	unsigned int i;
@@ -89,3 +74,22 @@ int _unsetenv(list_t **env, char *varN)
 		}
 	return (0);
 }
+
+/**
+ * copy_env - Creates a copy of the env passed to main.
+ * @env: The environment.
+ *
+ * Return: Copy of the env as a singly-linked list, otherwise NULL.
+ */
+list_t *copy_env(char **env)
+{
+	unsigned int i;
+	list_t *env_list;
+
+	env_list = NULL;
+	for (i = 0; env[i]; i++)
+		add_node(&env_list, i, env[i]);
+
+	return (env_list);
+}
+

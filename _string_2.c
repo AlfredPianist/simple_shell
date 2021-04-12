@@ -23,6 +23,29 @@ char *_strcat(char *dest, char *src)
 }
 
 /**
+ * _strncat - Concatenates two strings, given n amount of characters.
+ * @dest: First string to concatenate and the final result.
+ * @src: Second string to concatenate.
+ * @n: The amount of characters to concatenate.
+ *
+ * Return: The full concatenated string.
+ */
+char *_strncat(char *dest, char *src, int n)
+{
+	int i = 0, size = 0, j = 0;
+
+	while (dest[i++])
+		size++;
+
+	for (j = 0; src[j] && j < n; j++, size++)
+		dest[size] = src[j];
+
+	dest[size] = '\0';
+
+	return (dest);
+}
+
+/**
  * nstrcat - Concatenates n strings to a final one.
  * @tot_strs: The total strings to be concatenated.
  *

@@ -7,11 +7,11 @@ int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
 	char **environment)
 {
-	char *line = NULL, **command = NULL, p[]= "($) ";
+	char *line = NULL, **command, p[] = "($) ";
 	ssize_t char_read = 0;
 	struct stat stat_buff;
 	int exec_status = 0, contador = 0;
-	list_t *env = NULL;
+	list_t *env = NULL, *alias = NULL;
 	builtin_t builtins[] = {
 		{"exit", exit_builtin},
 	/*	{"help", help_builtin}, */
@@ -29,32 +29,31 @@ int main(__attribute__ ((__unused__)) int argc,
 	do {
 		char_read = prompt_line(p, &line);
 		if (char_read == EOF)
-                {
-                        free(line);
-                        break;
-                }
-		command = parse_line(command, line, ' ');
+		{
+			free(line);
+			break;
+		}
+		command = parse_line(command, line, " \t\r\n", " ");
 
-		f_built = select_bulit(builtins, command[0]); 
-	
+		f_built = select_bulit(builtins, command[0]);
 		if (f_built->builtin_n != NULL)
 		{
-			exec_status = f_built->builtin_f(command, &env);
+			exec_status = f_built->builtin_f(command, &alias, &env);
 		}
 		else
 		{
 			exec_status = select_exec(command, &env);
-		
+
 			if (exec_status == -1)
 			{
-				argv[0],contador, command[0];
+				argv[0], contador, command[0];
 			}
 
 		}
 		contador++;
 		free(line), free_strs_array(command);
 
-		if (f_built->builtin_n &&_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
+		if (f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
 			break;
 	} while (char_read != EOF);
 
@@ -67,32 +66,32 @@ builtin_t *select_bulit(builtin_t *builtins, char *command_name)
 	int i;
 
 	for (i = 0; builtins[i].builtin_n != NULL; i++)
-                if (_strcmp(command_name, builtins[i].builtin_n) == 0)
-                        return &builtins[i];
-	return &builtins[i];
+		if (_strcmp(command_name, builtins[i].builtin_n) == 0)
+			return (&builtins[i]);
+	return (&builtins[i]);
 }
 
 int prompt_line(char *p, char **line)
 {
-        int char_read;
+	int char_read;
 
-       /* Interactive mode */
-        if (isatty(STDIN_FILENO))
-        {
-                write(STDOUT_FILENO, p, _strlen(p));
-                char_read = get_input_line(line);
+	/* Interactive mode */
+	if (isatty(STDIN_FILENO))
+	{
+		write(STDOUT_FILENO, p, _strlen(p));
+		char_read = get_input_line(line);
 		return (char_read);
-                
-        }
-        /* Non-interactive mode */
-        else
-        {
-                char_read = get_input_line(line);
+	}
+	/* Non-interactive mode */
+	else
+	{
+		char_read = get_input_line(line);
 		if (char_read == EOF)
 			return (char_read);
-                write(STDOUT_FILENO, p, _strlen(p));
-        }
+		write(STDOUT_FILENO, p, _strlen(p));
+	}
 }
+
 /*
  * PENDIENTES:
  * MAÑANA: PATH y env.
