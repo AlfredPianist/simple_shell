@@ -22,6 +22,7 @@ int _strlen(char *str);
 char *_strcat(char *dest, char *src);
 char *nstrcat(int tot_strs, ...);
 char *_strcpy(char *dest, char *src);
+char *_strpbrk(char *s, char *accept);
 
 char *_strncat(char *dest, char *src, int n);
 int is_delim(char curr_char, char *delims);

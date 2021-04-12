@@ -33,28 +33,25 @@ int main(__attribute__ ((__unused__)) int argc,
 			free(line);
 			break;
 		}
-		command = parse_line(command, line, " \t\r\n", " ");
+		command = parse_line(command, line, " \t\r\n", " "), free(line);
 
-		f_built = select_bulit(builtins, command[0]);
-		if (f_built->builtin_n != NULL)
+		if (command)
 		{
-			exec_status = f_built->builtin_f(command, &alias, &env);
-		}
-		else
-		{
-			exec_status = select_exec(command, &env);
-
-			if (exec_status == -1)
+			f_built = select_bulit(builtins, command[0]);
+			if (f_built->builtin_n != NULL)
+				exec_status = f_built->builtin_f(command, &alias, &env);
+			else
 			{
-				argv[0], contador, command[0];
+				exec_status = select_exec(command, &env);
+				if (exec_status == -1)
+					argv[0], contador, command[0];
 			}
+			contador++;
+			free_strs_array(command);
 
+			if (f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
+				break;
 		}
-		contador++;
-		free(line), free_strs_array(command);
-
-		if (f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
-			break;
 	} while (char_read != EOF);
 
 	free_list(&env);

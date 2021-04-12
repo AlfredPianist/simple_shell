@@ -1,7 +1,7 @@
 #include "test.h"
 
 /**
- * _strcat - Concatenates two strings.
+ * _strncat - Concatenates two strings.
  * @dest: First string to concatenate and the final result.
  * @src: Second string to concatenate.
  *
@@ -20,6 +20,34 @@ char *_strncat(char *dest, char *src, int n)
 	dest[size] = '\0';
 
 	return (dest);
+}
+
+/**
+ * *_strpbrk - searches a string for any of a set of bytes.
+ * @s: the source string.
+ * @accept: the substring of accepted characters.
+ *
+ * Return: a pointer to the byte in s that matches one of the bytes in accept,
+ *         or NULL if not found.
+ */
+char *_strpbrk(char *s, char *accept)
+{
+	unsigned int index_s, index_a;
+	char *res = NULL;
+
+	for (index_s = 0; s[index_s] != '\0' && res == NULL; index_s++)
+	{
+		for (index_a = 0; accept[index_a] != '\0'; index_a++)
+		{
+			if (s[index_s] == accept[index_a])
+			{
+				res = s + index_s;
+				break;
+			}
+		}
+	}
+
+	return (res);
 }
 
 int is_delim(char curr_char, char *delims)
@@ -65,6 +93,15 @@ char *new_token(char **line, char *delims, char *ignore)
 	*line += letters;
 
 	return (token);
+}
+
+char *substring(char *line, char *ignore)
+{
+	char *substring = NULL;
+	char *begin, *end;
+
+	while (ignore && *ignore)
+		begin = _strpbrk(*line, *ignore)
 }
 
 /**

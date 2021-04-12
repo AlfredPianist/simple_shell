@@ -27,9 +27,10 @@ int get_input_line(char **line)
  */
 char **parse_line(char **command, char *line, char *delims, char *ignore)
 {
-	unsigned int words = 0, letters = 0, counter = 0;
+	unsigned int words = 0, counter = 0;
 
 	words = count_tokens(line, delims, ignore);
+
 	command = NULL;
 	command = _realloc(command, 0, sizeof(*command) * (words + 1));
 	if (command == NULL)
@@ -42,6 +43,12 @@ char **parse_line(char **command, char *line, char *delims, char *ignore)
 		else
 			line++;
 	}
+	if (command[0] == NULL)
+	{
+		free(command);
+		return (NULL);
+	}
+
 	command[counter] = NULL;
 	return (command);
 }
