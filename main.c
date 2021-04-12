@@ -52,7 +52,7 @@ int main(__attribute__ ((__unused__)) int argc,
 
 		}
 		contador++;
-		free_all(line, command);
+		free(line), free_strs_array(command);
 
 		if (f_built->builtin_n &&_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
 			break;

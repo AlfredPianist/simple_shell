@@ -17,15 +17,14 @@ int select_exec(char **command, list_t **env)
 
 		if (stat(tmp, &stat_buff) == 0)
 		{
-			free(command[0]);
-			free_all(0, path);
+			free(command[0]), free_strs_array(path);
 			command[0] = tmp;
 			return (execute(command));
 		}
 		free(tmp);
 	}
 
-	free_all(0, path);
+	free_strs_array(path);
 
 	if (stat(command[0], &stat_buff) == 0)
 		return (execute(command));

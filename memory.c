@@ -53,20 +53,20 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	return (p_realloc);
 }
 
-void free_all(char *line, char **command)
+/**
+ * free_strs_array - Frees an array of strings.
+ * @strs_array: The array of strings to be freed.
+ */
+void free_strs_array(char **strs_array)
 {
 	unsigned int counter;
+
 	counter = 0;
-
-	if (command)
+	if (strs_array)
 	{
-		if (command[counter])		
-			while (command[counter] != NULL)
-				free(command[counter++]);
-		
-		free(command);
+		if (strs_array[counter])
+			while (strs_array[counter] != NULL)
+				free(strs_array[counter++]);
+		free(strs_array);
 	}
-
-	if (line)
-		free(line);
 }

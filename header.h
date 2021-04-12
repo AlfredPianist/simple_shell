@@ -63,7 +63,7 @@ int execute(char **command);
 
 /* Memory management */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void free_all(char *line, char **command);
+void free_strs_array(char **strs_array);
 
 /* String manipulation */
 int _strlen(char *str);
