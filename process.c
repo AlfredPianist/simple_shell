@@ -40,7 +40,7 @@ int select_exec(char **command, list_t **env)
 	write(STDERR_FILENO, ": not found\n", 12);
 	return (-1);
 }
-
+/*
 int _perror(int err, char *command_name)
 {
 	char msg[100];
@@ -60,7 +60,7 @@ int _perror(int err, char *command_name)
 	write(STDERR_FILENO, msg , _strlen(msg));
 
 	return (errCodes[err]);
-}
+} */
 
 /**
  * execute - Executes a command on a child process.

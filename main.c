@@ -39,7 +39,7 @@ int main(__attribute__ ((__unused__)) int argc,
 	
 		if (f_built->builtin_n != NULL)
 		{
-			exect_status = f_built->builtin_f(command, &env):
+			exec_status = f_built->builtin_f(command, &env);
 		}
 		else
 		{
