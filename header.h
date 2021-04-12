@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <stdarg.h>
 
 /* Definition of booleans TRUE and FALSE */
 #ifdef TRUE
@@ -30,12 +31,22 @@ typedef enum boolean_e
 	TRUE
 } boolean;
 
+/**
+ * struct list_s - A general purpose singly linked list structure.
+ * @str: A string.
+ * @next: The pointer to the next node.
+ */
 typedef struct list_s
 {
 	char *str;
 	struct list_s *next;
 } list_t;
 
+/**
+ * struct builtin_s - A structure for the diverse shell builtins.
+ * @builtin_n: The name of the builtin.
+ * @builtin_f: A function pointer to the builtin's function.
+ */
 typedef struct builtin_s
 {
 	char *builtin_n;
@@ -55,29 +66,23 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_all(char *line, char **command);
 
 /* String manipulation */
-int _strcmp(char *str1, char *str2);
-int _strncmp(char *str1, char *str2, int num_chars);
-int _strcmp(char *str1, char *str2);
-int _atoi(char *str);
 int _strlen(char *str);
+char *_strcpy(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
+int _strncmp(char *s1, char *s2, int n);
+int _atoi(char *s);
+char *_strcat(char *dest, char *src);
+char *nstrcat(const int tot_strs, ...);
 
 /* Builtins */
-int exit_builtin(__attribute__ ((__unused__)) char **commands, 
-		__attribute__ ((__unused__)) list_t **env);
-int env_builtin(__attribute__ ((__unused__)) char **commands,
-		__attribute__ ((__unused__)) list_t **env);
-int setenv_builtin(__attribute__ ((__unused__)) char **commands,
-		   __attribute__ ((__unused__)) list_t **env);
-int unsetenv_builtin(__attribute__ ((__unused__)) char **commands,
-		     __attribute__ ((__unused__)) list_t **env);
-int help_builtin(__attribute__ ((__unused__)) char **commands,
-		 __attribute__ ((__unused__)) char **env);
-int history_builtin(__attribute__ ((__unused__)) char **commands,
-		    __attribute__ ((__unused__)) char **env);
-int cd_builtin(__attribute__ ((__unused__)) char **commands,
-	       __attribute__ ((__unused__)) char **env);
-int alias_builtin(__attribute__ ((__unused__)) char **commands,
-		  __attribute__ ((__unused__)) char **env);
+int exit_builtin(char **commands, list_t **env);
+int env_builtin(char **commands, list_t **env);
+int setenv_builtin(char **commands, list_t **env);
+int unsetenv_builtin(char **commands, list_t **env);
+int help_builtin(char **commands, char **env);
+int history_builtin(char **commands, char **env);
+int cd_builtin(char **commands, char **env);
+int alias_builtin(char **commands, char **env);
 
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);

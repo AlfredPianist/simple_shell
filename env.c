@@ -49,18 +49,10 @@ char *get_env_var(char *var, list_t *env)
  */
 int _setenv(list_t **env, char *varN, char *varV)
 {
-	int buff_size;
 	char *buff = NULL;
 	list_t *curr_node;
 
-	buff_size = _strlen(varN) + _strlen(varV) + 2;
-	buff = _realloc(buff, 0, sizeof(*buff) * buff_size);
-	if (!buff)
-		return (0);
-
-	strcat(buff, varN);
-	strcat(buff, "=");
-	strcat(buff, varV);
+	buff = nstrcat(3, varN, "=", varV);
 
 	for (curr_node = *env; curr_node; curr_node = curr_node->next)
 		if (_strncmp(curr_node->str, varN, _strlen(varN)) == 0)

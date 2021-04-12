@@ -4,7 +4,6 @@ int select_exec(char **command, list_t **env)
 {
 	unsigned int i;
 	struct stat stat_buff;
-	unsigned int size_tmp;
 	char *tmp = NULL, **path = NULL;
 
 	if (command[0] == 0)
@@ -14,11 +13,7 @@ int select_exec(char **command, list_t **env)
 
 	for (i = 0; path[i]; i++)
 	{
-		size_tmp = _strlen(command[0]) + _strlen(path[i]) + 2;
-		tmp = malloc(sizeof(char) * size_tmp);
-		_strcpy(tmp, path[i]);
-		_strcat(tmp, "/");
-		_strcat(tmp, command[0]);
+		tmp = nstrcat(3, path[i], "/", command[0]);
 
 		if (stat(tmp, &stat_buff) == 0)
 		{
@@ -32,11 +27,12 @@ int select_exec(char **command, list_t **env)
 
 	free_all(0, path);
 
-	if (stat(command[0], &stat_buff) == 0)	
+	if (stat(command[0], &stat_buff) == 0)
 		return (execute(command));
+
 	write(STDERR_FILENO, "[SHELL_NAME]: ", 14);
 	write(STDERR_FILENO, "[CONTADOR]: ", 12);
-	write(STDERR_FILENO, command[0] , _strlen(command[0]));
+	write(STDERR_FILENO, command[0], _strlen(command[0]));
 	write(STDERR_FILENO, ": not found\n", 12);
 	return (-1);
 }

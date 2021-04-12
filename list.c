@@ -24,7 +24,7 @@ list_t *add_node(list_t **head, int idx, char *s)
 
 	node->str = NULL;
 	node->str = _realloc(node->str, 0, sizeof(*(node->str)) * _strlen(s) + 1);
-	node->str = strcpy(node->str, s);
+	node->str = _strcpy(node->str, s);
 
 	if (*head == NULL)
 	{

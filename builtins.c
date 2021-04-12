@@ -5,7 +5,8 @@
  * @commands: command exit and his params
  * Return: status of the exit
 */
-int exit_builtin(char **commands, __attribute__ ((__unused__)) list_t **env)
+int exit_builtin(__attribute__ ((__unused__)) char **commands,
+		 __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1] != NULL)
 	{
@@ -19,7 +20,8 @@ int exit_builtin(char **commands, __attribute__ ((__unused__)) list_t **env)
  * @commands: command help and his params
  * Return: -
 */
-int help_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
+int help_builtin(__attribute__ ((__unused__)) char **commands,
+		 __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
@@ -28,7 +30,8 @@ int help_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((_
  * @commands: command history and his params
  * Return: -
 */
-int history_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
+int history_builtin(__attribute__ ((__unused__)) char **commands,
+		    __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
@@ -37,7 +40,8 @@ int history_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ 
  * @commands: command cd and his params
  * Return: -
 */
-int cd_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
+int cd_builtin(__attribute__ ((__unused__)) char **commands,
+	       __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
@@ -46,7 +50,8 @@ int cd_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__u
  * @commands: command alias and his params
  * Return: -
 */
-int alias_builtin(__attribute__ ((__unused__)) char **commands, __attribute__ ((__unused__)) char **env)
+int alias_builtin(__attribute__ ((__unused__)) char **commands,
+		  __attribute__ ((__unused__)) char **env)
 {
 	return (1);
 }
