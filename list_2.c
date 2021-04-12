@@ -1,18 +1,18 @@
 #include "header.h"
 
 /**
- * get_var - Gets the value of an env variable.
+ * get_var - Gets the value from a list's variable.
  * @var: Variable to find in env.
- * @env: The env singly-linked list.
+ * @env: The singly-linked list.
  *
  * Return: Value of the variable found in env, otherwise NULL.
  */
-char *get_var(char *var, list_t *env)
+char *get_var(char *var, list_t *list)
 {
 	int i;
 	list_t *curr_node;
 
-	curr_node = env;
+	curr_node = list;
 	for (i = 0; curr_node; i++)
 	{
 		if (_strncmp(curr_node->str, var, _strlen(var)) == 0)
@@ -61,15 +61,15 @@ int add_to_list(list_t **list, char *varN, char *varV)
  *
  * Return: 1 if success, otherwise 0
  */
-int del_from_list(list_t **env, char *varN)
+int del_from_list(list_t **list, char *varN)
 {
 	list_t *curr_node;
 	unsigned int i;
 
-	for (i = 0, curr_node = *env; curr_node; i++, curr_node = curr_node->next)
+	for (i = 0, curr_node = *list; curr_node; i++, curr_node = curr_node->next)
 		if (_strncmp(curr_node->str, varN, _strlen(varN)) == 0)
 		{
-			delete_node_at_index(env, i);
+			delete_node_at_index(list, i);
 			return (1);
 		}
 	return (0);
@@ -92,4 +92,3 @@ list_t *copy_env(char **env)
 
 	return (env_list);
 }
-

@@ -43,6 +43,7 @@ char **parse_line(char **command, char *line, char *delims, char *ignore)
 		else
 			line++;
 	}
+
 	if (command[0] == NULL)
 	{
 		free(command);

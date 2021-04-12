@@ -33,8 +33,8 @@ int main(__attribute__ ((__unused__)) int argc,
 			free(line);
 			break;
 		}
-		command = parse_line(command, line, " \t\r\n", " "), free(line);
 
+		command = parse_line(command, line, " \t\r\n", " "), free(line);
 		if (command)
 		{
 			f_built = select_bulit(builtins, command[0]);
