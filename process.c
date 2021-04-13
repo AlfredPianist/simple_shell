@@ -5,7 +5,7 @@ int select_exec(char **command, list_t **env, char * shellName, int lineNo)
 	unsigned int i;
 	struct stat stat_buff;
 	char *tmp = NULL, **path = NULL;
-	char *errorMsg;
+	char *errorMsg, lineNoBuff[10];
 
 	if (command[0] == 0)
 		return (-1);
@@ -30,7 +30,7 @@ int select_exec(char **command, list_t **env, char * shellName, int lineNo)
 	if (stat(command[0], &stat_buff) == 0)
 		return (execute(command));
 	
-	errorMsg = nstrcat(6 , shellName, ": ", lineNo, ": ", command[0], "not found\n");
+	errorMsg = nstrcat(6 , shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff), ": ", command[0], " not found\n");
 	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
 	free(errorMsg);
 	return (-1);
