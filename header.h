@@ -61,7 +61,7 @@ int count_tokens(char *line, char *delims, char *ignore);
 char *new_token(char **line, char *delims, char *ignore);
 
 /* Process */
-int select_exec(char **command, list_t **env);
+int select_exec(char **command, list_t **env, char *, int);
 int execute(char **command);
 
 /* Memory management */

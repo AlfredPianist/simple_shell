@@ -42,9 +42,7 @@ int main(__attribute__ ((__unused__)) int argc,
 				exec_status = f_built->builtin_f(command, &alias, &env);
 			else
 			{
-				exec_status = select_exec(command, &env);
-				if (exec_status == -1)
-					argv[0], contador, command[0];
+				exec_status = select_exec(command, &env, argv[0], contador);
 			}
 			contador++;
 			free_strs_array(command);

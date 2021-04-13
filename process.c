@@ -1,10 +1,11 @@
 #include "header.h"
 
-int select_exec(char **command, list_t **env)
+int select_exec(char **command, list_t **env, char * shellName, int lineNo)
 {
 	unsigned int i;
 	struct stat stat_buff;
 	char *tmp = NULL, **path = NULL;
+	char *errorMsg;
 
 	if (command[0] == 0)
 		return (-1);
@@ -28,11 +29,10 @@ int select_exec(char **command, list_t **env)
 
 	if (stat(command[0], &stat_buff) == 0)
 		return (execute(command));
-
-	write(STDERR_FILENO, "[SHELL_NAME]: ", 14);
-	write(STDERR_FILENO, "[CONTADOR]: ", 12);
-	write(STDERR_FILENO, command[0], _strlen(command[0]));
-	write(STDERR_FILENO, ": not found\n", 12);
+	
+	errorMsg = nstrcat(6 , shellName, ": ", lineNo, ": ", command[0], "not found\n");
+	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
+	free(errorMsg);
 	return (-1);
 }
 /*
