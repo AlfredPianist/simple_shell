@@ -11,24 +11,17 @@ int main(__attribute__ ((__unused__)) int argc,
 	ssize_t char_read = 0;
 	struct stat stat_buff;
 	int exec_status = 0, contador = 0;
-	list_t *env = NULL;
+	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
-	builtin_t builtins[] = {
-		{"exit", exit_builtin},
-	/*	{"help", help_builtin}, */
-	/*	{"history", history_builtin}, */
-		{"env", env_builtin},
-		{"setenv", setenv_builtin},
-		{"unsetenv", unsetenv_builtin},
+	builtin_t builtins[] = { {"exit", exit_builtin},/*{"help", help_builtin}, */
+	/*	{"history", history_builtin}, */ {"env", env_builtin},
+		{"setenv", setenv_builtin}, {"unsetenv", unsetenv_builtin},
 	/*	{"cd", cd_builtin}, {"alias", alias_builtin}, */
-		{NULL, NULL} };
-
-	builtin_t *f_built;
-
-	env = copy_env(environment);
+		{NULL, NULL} }, *f_built = 0;
 
 	do {
 		char_read = prompt_line(p, &line);
+
 		if (char_read == EOF)
 		{
 			free(line);
@@ -36,25 +29,30 @@ int main(__attribute__ ((__unused__)) int argc,
 		}
 
 		command = parse_line(line, " \t\r\n", NULL), free(line);
+
 		if (command)
 		{
 			f_built = select_bulit(builtins, command[0]);
-			if (f_built->builtin_n != NULL)
-				exec_status = f_built->builtin_f(command, &alias, &env);
-			else
-			{
-				exec_status = select_exec(command, &env, argv[0], contador);
-			}
+
+			exec_status = (f_built->builtin_n != NULL) ?
+				f_built->builtin_f(command, &alias, &env):
+				select_exec(command, &env, argv[0], contador);
+
 			contador++;
 			free_strs_array(command);
-
-			if (f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
-				break;
 		}
-	} while (char_read != EOF);
+	} while (char_read != EOF &&
+		!(f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
 
 	free_list(&env);
 	exit(exec_status);
+}
+
+list_t pre_parse(char * line)
+{
+	list_t *commands = malloc(sizeof(list_t));
+
+	commands->
 }
 
 builtin_t *select_bulit(builtin_t *builtins, char *command_name)
