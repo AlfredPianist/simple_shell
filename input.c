@@ -19,37 +19,43 @@ int get_input_line(char **line)
 }
 
 /**
- * parse_line - Parses a sentence into tokens, its delimiter being ' '
- * @command: The pointer to the array of strings of the future parsed sentence.
+ * parse_line - Parses a sentence into tokens.
  * @line: The input line stored.
+ * @delims: The array of delimiters.
+ * @ignore: The array of substring delimiters (matched pair).
  *
  * Return: The parsed sentence.
  */
-char **parse_line(char **command, char *line, char *delims, char *ignore)
+char **parse_line(char *line, char *delims, char *ignore)
 {
-	unsigned int words = 0, counter = 0;
+	unsigned int words = 0, letters = 0, counter = 0;
+	char **command = NULL;
 
 	words = count_tokens(line, delims, ignore);
-
-	command = NULL;
 	command = _realloc(command, 0, sizeof(*command) * (words + 1));
+
 	if (command == NULL)
 		return (NULL);
 
 	while (line && *line)
 	{
 		if (!is_delim(*line, delims))
-			command[counter++] = new_token(&line, delims, ignore);
+		{
+			if (ignore && *line == *ignore)
+			{
+				letters = is_substring(line, ignore);
+				if (letters > 0)
+				{
+					command[counter++] = substring(line, ignore, letters);
+					line += letters + 2;
+				}
+			}
+			else
+				command[counter++] = new_token(&line, delims);
+		}
 		else
 			line++;
 	}
-
-	if (command[0] == NULL)
-	{
-		free(command);
-		return (NULL);
-	}
-
 	command[counter] = NULL;
 	return (command);
 }

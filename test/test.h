@@ -27,9 +27,13 @@ char *_strpbrk(char *s, char *accept);
 char *_strncat(char *dest, char *src, int n);
 int is_delim(char curr_char, char *delims);
 int count_tokens(char *line, char *delims, char *ignore);
-char *new_token(char **line, char *delims, char *ignore);
-char **parse_line(char **command, char *line, char *delims, char *ignore);
+int is_substring(char *line, char *ignore);
+char *substring(char *line, char *ignore, int len);
+char *new_token(char **line, char *delims);
+char **parse_line(char *line, char *delims, char *ignore);
 void print_parsed_line(char **command);
 void free_strs_array(char **strs_array);
+
+char *alias_value(char *line);
 
 #endif

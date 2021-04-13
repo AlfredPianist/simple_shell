@@ -60,26 +60,33 @@ int is_delim(char curr_char, char *delims)
 
 int count_tokens(char *line, char *delims, char *ignore)
 {
-	int tokens = 0, i = 0;
+	int tokens = 0, i = 0, len_substring = 0;
 
-	ignore = ignore;
-	while (line && line[i])
+	while (line && *line)
 	{
-		if (is_delim(line[i], delims) ||
-		    (!is_delim(line[i], delims) && !line[i + 1]))
+		if (*line == '\'')
+		{
+			len_substring = is_substring(line, ignore);
+			if (len_substring > 0)
+				line += len_substring + 2;
 			tokens += 1;
-		i++;
+		}
+		else
+		{
+			if ((!is_delim(*line, delims) && is_delim(*(line + 1), delims))
+			    || (!is_delim(*line, delims) && !(*(line + 1))))
+				tokens += 1;
+			line++;
+		}
 	}
 
 	return (tokens);
 }
 
-char *new_token(char **line, char *delims, char *ignore)
+char *new_token(char **line, char *delims)
 {
 	char *token = NULL;
 	int i = 0, letters = 0;
-
-	ignore = ignore;
 
 	while ((*line)[i] && !is_delim((*line)[i], delims))
 		letters += 1, i++;
@@ -95,13 +102,42 @@ char *new_token(char **line, char *delims, char *ignore)
 	return (token);
 }
 
-char *substring(char *line, char *ignore)
+int is_substring(char *line, char *ignore)
 {
-	char *substring = NULL;
 	char *begin, *end;
+	int i = 0;
 
-	while (ignore && *ignore)
-		begin = _strpbrk(*line, *ignore)
+	begin = end = NULL;
+	if (!ignore && !*ignore)
+		return (-1);
+
+	begin = _strpbrk(line, ignore);
+	if (begin == NULL || begin + 1 == '\0')
+		return (-1);
+
+	end = _strpbrk(begin + 1, ignore);
+	if (end == NULL)
+		return (-1);
+
+	while (begin != end)
+		begin++, i++;
+
+	/* printf("len of substring = %d\n", i - 1), fflush(stdout); */
+	return (i - 1);
+}
+
+char *substring(char *line, char *ignore, int len)
+{
+	char *begin, *substring;
+
+	substring = begin = NULL;
+
+	begin = _strpbrk(line, ignore) + 1;
+
+	substring = _realloc(substring, 0, sizeof(*substring) * len + 1);
+	_strncat(substring, begin, len);
+
+	return (substring);
 }
 
 /**
@@ -111,19 +147,34 @@ char *substring(char *line, char *ignore)
  *
  * Return: The parsed sentence.
  */
-char **parse_line(char **command, char *line, char *delims, char *ignore)
+char **parse_line(char *line, char *delims, char *ignore)
 {
 	unsigned int words = 0, letters = 0, counter = 0;
+	char **command = NULL;
 
 	words = count_tokens(line, delims, ignore);
+	printf("number of tokens = %d\n", words);
 	command = _realloc(command, 0, sizeof(*command) * (words + 1));
+
 	if (command == NULL)
 		return (NULL);
 
 	while (line && *line)
 	{
 		if (!is_delim(*line, delims))
-			command[counter++] = new_token(&line, delims, ignore);
+		{
+			if (*line == '\'')
+			{
+				letters = is_substring(line, ignore);
+				if (letters > 0)
+				{
+					command[counter++] = substring(line, ignore, letters);
+					line += letters + 2;
+				}
+			}
+			else
+				command[counter++] = new_token(&line, delims);
+		}
 		else
 			line++;
 	}
