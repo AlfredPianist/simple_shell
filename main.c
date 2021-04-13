@@ -11,7 +11,8 @@ int main(__attribute__ ((__unused__)) int argc,
 	ssize_t char_read = 0;
 	struct stat stat_buff;
 	int exec_status = 0, contador = 0;
-	list_t *env = NULL, *alias = NULL;
+	list_t *env = NULL;
+	alias_t *alias = NULL;
 	builtin_t builtins[] = {
 		{"exit", exit_builtin},
 	/*	{"help", help_builtin}, */
@@ -34,7 +35,7 @@ int main(__attribute__ ((__unused__)) int argc,
 			break;
 		}
 
-		command = parse_line(command, line, " \t\r\n", " "), free(line);
+		command = parse_line(line, " \t\r\n", NULL), free(line);
 		if (command)
 		{
 			f_built = select_bulit(builtins, command[0]);

@@ -3,7 +3,7 @@
 /**
  * get_var - Gets the value from a list's variable.
  * @var: Variable to find in env.
- * @env: The singly-linked list.
+ * @list: The singly-linked list.
  *
  * Return: Value of the variable found in env, otherwise NULL.
  */

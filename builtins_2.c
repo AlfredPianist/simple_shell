@@ -6,7 +6,7 @@
  * Return:
  */
 int env_builtin(__attribute__ ((__unused__)) char **commands,
-		__attribute__ ((__unused__)) list_t **alias,
+		__attribute__ ((__unused__)) alias_t **alias,
 		__attribute__ ((__unused__)) list_t **env)
 {
 	print_list(*env);
@@ -19,7 +19,7 @@ int env_builtin(__attribute__ ((__unused__)) char **commands,
  * Return: -
  */
 int setenv_builtin(__attribute__ ((__unused__)) char **commands,
-		   __attribute__ ((__unused__)) list_t **alias,
+		   __attribute__ ((__unused__)) alias_t **alias,
 		   __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1] && commands[2])
@@ -36,7 +36,7 @@ int setenv_builtin(__attribute__ ((__unused__)) char **commands,
  * Return: -
  */
 int unsetenv_builtin(__attribute__ ((__unused__)) char **commands,
-		     __attribute__ ((__unused__)) list_t **alias,
+		     __attribute__ ((__unused__)) alias_t **alias,
 		     __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1])

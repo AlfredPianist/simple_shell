@@ -9,7 +9,7 @@ int select_exec(char **command, list_t **env)
 	if (command[0] == 0)
 		return (-1);
 
-	path = parse_line(path, get_var("PATH", *env), ":\n", " ");
+	path = parse_line(get_var("PATH", *env), ":\n", NULL);
 
 	for (i = 0; path[i]; i++)
 	{
@@ -35,6 +35,7 @@ int select_exec(char **command, list_t **env)
 	write(STDERR_FILENO, ": not found\n", 12);
 	return (-1);
 }
+
 /*
 int _perror(int err, char *command_name)
 {

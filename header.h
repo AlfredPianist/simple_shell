@@ -43,6 +43,19 @@ typedef struct list_s
 } list_t;
 
 /**
+ * struct alias_s - A singly linked list structure for the aliases.
+ * @name: The alias' name.
+ * @value: The alias' value.
+ * @next: The pointer to the next node.
+ */
+typedef struct alias_s
+{
+	char *name;
+	char *value;
+	struct alias_s *next;
+} alias_t;
+
+/**
  * struct builtin_s - A structure for the diverse shell builtins.
  * @builtin_n: The name of the builtin.
  * @builtin_f: A function pointer to the builtin's function.
@@ -50,15 +63,17 @@ typedef struct list_s
 typedef struct builtin_s
 {
 	char *builtin_n;
-	int (*builtin_f)(char **command, list_t **alias, list_t **env);
+	int (*builtin_f)(char **command, alias_t **alias, list_t **env);
 } builtin_t;
 
 /* Input */
 int get_input_line(char **line);
-char **parse_line(char **command, char *line, char *delims, char *ignore);
+char **parse_line(char *line, char *delims, char *ignore);
 int is_delim(char curr_char, char *delims);
 int count_tokens(char *line, char *delims, char *ignore);
-char *new_token(char **line, char *delims, char *ignore);
+int is_substring(char *line, char *ignore);
+char *substring(char *line, char *ignore, int len);
+char *new_token(char **line, char *delims);
 
 /* Process */
 int select_exec(char **command, list_t **env);
@@ -71,37 +86,44 @@ void free_strs_array(char **strs_array);
 /* String manipulation */
 int _strlen(char *str);
 char *_strcpy(char *dest, char *src);
-int _strcmp(char *s1, char *s2);
-int _strncmp(char *s1, char *s2, int n);
-int _atoi(char *s);
+char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
 char *nstrcat(const int tot_strs, ...);
+int _strcmp(char *s1, char *s2);
+int _strncmp(char *s1, char *s2, int n);
+char *_strpbrk(char *s, char *accept);
+int _atoi(char *s);
 
 /* Builtins */
-int exit_builtin(char **commands, list_t **alias, list_t **env);
-int env_builtin(char **commands, list_t **alias, list_t **env);
-int setenv_builtin(char **commands, list_t **alias, list_t **env);
-int unsetenv_builtin(char **commands, list_t **alias, list_t **env);
+int exit_builtin(char **commands, alias_t **alias, list_t **env);
+int env_builtin(char **commands, alias_t **alias, list_t **env);
+int setenv_builtin(char **commands, alias_t **alias, list_t **env);
+int unsetenv_builtin(char **commands, alias_t **alias, list_t **env);
 int help_builtin(char **commands, char **env);
 int history_builtin(char **commands, char **env);
 int cd_builtin(char **commands, char **env);
-int alias_builtin(char **commands, list_t **alias, list_t **env);
+int alias_builtin(char **commands, alias_t **alias, list_t **env);
 
 /* Misc */
 void print_memory_hex(char *buffer, unsigned long int buffer_size);
 void print_parse(char **command);
 void print_parsed_line(char **command);
 
-/* List manipulation */
+/* List manipulation (env & history) */
 list_t *add_node(list_t **head, int idx, char *s);
 void print_list(list_t *head);
 int delete_node_at_index(list_t **head, unsigned int index);
 void free_list(list_t **head);
 
-char *get_var(char *var, list_t *env);
-int add_to_list(list_t **env, char *varN, char *varV);
-int del_from_list(list_t **env, char *varN);
+char *get_var(char *var, list_t *list);
+int add_to_list(list_t **list, char *varN, char *varV);
+int del_from_list(list_t **list, char *varN);
+
+/* List manipulation (alias) */
+alias_t *add_node_alias(alias_t **head, int idx, char *var, char *val);
+void print_list_alias(alias_t *head);
+void free_list_alias(alias_t **head);
 
 /* Environment */
 list_t *copy_env(char **env);

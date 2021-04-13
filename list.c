@@ -22,9 +22,7 @@ list_t *add_node(list_t **head, int idx, char *s)
 	if (!node)
 		return (NULL);
 
-	node->str = NULL;
-	node->str = _realloc(node->str, 0, sizeof(*(node->str)) * _strlen(s) + 1);
-	node->str = _strcpy(node->str, s);
+	node->str = _strdup(s);
 
 	if (*head == NULL)
 	{
@@ -62,12 +60,16 @@ list_t *add_node(list_t **head, int idx, char *s)
  */
 void print_list(list_t *head)
 {
-	list_t *list;
-
-	list = head;
+	list_t *list = head;
+	char *string = NULL;
 
 	while (list)
-		printf("%s\n", list->str), list = list->next;
+	{
+		string = nstrcat(2, list->str, "\n");
+		write(STDOUT_FILENO, string, _strlen(string) + 1);
+		free(string);
+		list = list->next;
+	}
 }
 
 /**
@@ -90,8 +92,7 @@ int delete_node_at_index(list_t **head, unsigned int index)
 	if (index == 0)
 	{
 		current_node = (*head)->next;
-		free((*head)->str);
-		free(*head);
+		free((*head)->str), free(*head);
 		*head = current_node;
 	}
 	else
@@ -105,8 +106,7 @@ int delete_node_at_index(list_t **head, unsigned int index)
 		}
 		tmp = current_node->next;
 		current_node->next = tmp->next;
-		free(tmp->str);
-		free(tmp);
+		free(tmp->str), free(tmp);
 	}
 
 	return (1);
@@ -127,8 +127,7 @@ void free_list(list_t **head)
 	while (*head != NULL)
 	{
 		next_node = (*head)->next;
-		free((*head)->str);
-		free(*head);
+		free((*head)->str), free(*head);
 		*head = next_node;
 	}
 	*head = NULL;
