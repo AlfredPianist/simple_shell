@@ -56,6 +56,13 @@ char **parse_line(char *line, char *delims, char *ignore)
 		else
 			line++;
 	}
+	if (command[0] == NULL)
+	{
+		free(command);
+		return (NULL);
+	}
+
 	command[counter] = NULL;
+
 	return (command);
 }
