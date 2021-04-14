@@ -19,7 +19,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 
 	if (command[0] == 0)
 		return (-1);
-
+;
 	path = parse_line(get_var("PATH", *env), ":\n", NULL);
 
 	for (i = 0; path[i]; i++)
@@ -41,7 +41,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 		return (execute(command));
 
 	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
-				": ", command[0], " not found\n");
+				": ", command[0], ": not found\n");
 	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
 	free(errorMsg);
 

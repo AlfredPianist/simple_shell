@@ -34,7 +34,7 @@ char **parse_line(char *line, char *delims, char *ignore)
 	words = count_tokens(line, delims, ignore);
 	command = _realloc(command, 0, sizeof(*command) * (words + 1));
 
-	if (command == NULL)
+	if (!command)
 		return (NULL);
 
 	while (line && *line)
