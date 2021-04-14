@@ -72,10 +72,10 @@ int execute(char **command, char * shellName)
 	}
 	else
 	{
-		/* Parent process */
-		do {
-			waitpid(child_id, &status, 0);
-		} while (WIFEXITED(status) == FALSE && WIFSIGNALED(status) == FALSE);
+		wait(&status);
+
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
 	}
-	return (1);
+	return (status);
 }
