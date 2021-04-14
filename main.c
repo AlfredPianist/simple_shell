@@ -52,7 +52,6 @@ int main(__attribute__ ((__unused__)) int argc,
 			_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
 
 	free_list(&env);
-	exec_status = 0;
 	return (exec_status);
 }
 
