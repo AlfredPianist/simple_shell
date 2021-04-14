@@ -21,6 +21,7 @@ int main(__attribute__ ((__unused__)) int argc,
 				 {"env", env_builtin}, {"setenv", setenv_builtin},
 				 {"unsetenv", unsetenv_builtin}, {NULL, NULL} },
 		*f_built = 0;
+
 	do {
 		char_read = prompt_line(p, &line);
 

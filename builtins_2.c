@@ -11,7 +11,11 @@ int env_builtin(__attribute__ ((__unused__)) char **commands,
 		__attribute__ ((__unused__)) alias_t **alias,
 		__attribute__ ((__unused__)) list_t **env)
 {
-	print_list(*env);
+	if (*env)
+	{
+		print_list(*env);
+		return (0);
+	}
 	return (1);
 }
 

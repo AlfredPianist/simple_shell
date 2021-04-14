@@ -87,10 +87,9 @@ int del_from_list(list_t **list, char *varN)
 list_t *copy_env(char **env)
 {
 	unsigned int i;
-	list_t *env_list;
+	list_t *env_list = NULL;
 
-	env_list = NULL;
-	for (i = 0; env[i]; i++)
+	for (i = 0; env && env[i]; i++)
 		add_node(&env_list, i, env[i]);
 
 	return (env_list);
