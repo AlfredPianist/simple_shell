@@ -98,12 +98,13 @@ char *_strpbrk(char *s, char *accept);
 int _atoi(char *s);
 char *_itoa(int buffsize, char sign, unsigned long int num, char *nums);
 char *_substring(char *, int, int);
+
 /* Builtins */
 int exit_builtin(char **commands, alias_t **alias, list_t **env);
 int env_builtin(char **commands, alias_t **alias, list_t **env);
 int setenv_builtin(char **commands, alias_t **alias, list_t **env);
 int unsetenv_builtin(char **commands, alias_t **alias, list_t **env);
-int help_builtin(char **commands, char **env);
+int help_builtin(char **commands, alias_t **alias, list_t **env);
 int history_builtin(char **commands, char **env);
 int cd_builtin(char **commands, char **env);
 int alias_builtin(char **commands, alias_t **alias, list_t **env);

@@ -17,7 +17,7 @@ int main(__attribute__ ((__unused__)) int argc,
 	int exec_status = 0, contador = 1;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
-	builtin_t builtins[] = { {"exit", exit_builtin},
+	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
 				 {"env", env_builtin}, {"setenv", setenv_builtin},
 				 {"unsetenv", unsetenv_builtin}, {NULL, NULL} },
 		*f_built = 0;

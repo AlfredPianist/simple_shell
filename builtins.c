@@ -23,8 +23,48 @@ int exit_builtin(__attribute__ ((__unused__)) char **commands,
  * Return: -
 */
 int help_builtin(__attribute__ ((__unused__)) char **commands,
-		 __attribute__ ((__unused__)) char **env)
+		 __attribute__ ((__unused__)) alias_t **alias,
+		 __attribute__ ((__unused__)) list_t **env)
 {
+	char *help = NULL;
+
+	if (commands[1])
+	{
+		if (_strcmp(commands[1], "exit") == 0)
+		{
+			help = nstrcat(4, "Usage:\texit [n]\n",
+				       "\tExit the shell.\n\n",
+				       "\tExits the shell with a status of n. If n is omitted, the exit status\n",
+				       "\tis that of the last command executed.\n");
+			write(STDOUT_FILENO, help, _strlen(help)), free(help);
+			return (0);
+		}
+		else if (_strcmp(commands[1], "help") == 0)
+		{
+			help = nstrcat(4, "Usage:\thelp [BUILTIN]\n",
+				       "\tDisplay information about builtin commands.\n\n",
+				       "\tDisplays a brief summary of command BUILTIN.\n",
+				       "\tReturns success unless BUILTIN is not found.\n");
+			write(STDOUT_FILENO, help, _strlen(help)), free(help);
+			return (0);
+		}
+		else if (_strcmp(commands[1], "env") == 0)
+		{
+			help = nstrcat(3, "Usage:\tenv\n",
+				       "\tPrints all the environment variables.\n\n",
+				       "\tReturns success unless environment is not found.\n");
+			write(STDOUT_FILENO, help, _strlen(help)), free(help);
+			return (0);
+		}
+		else
+		{
+			help = _strdup("Error: Command not found.\n");
+			write(STDERR_FILENO, help, _strlen(help)), free(help);
+		}
+		return (1);
+	}
+	help = _strdup("Error: Command not specified.\nUsage: help [BUILTIN]\n");
+	write(STDERR_FILENO, help, _strlen(help)), free(help);
 	return (1);
 }
 /**
