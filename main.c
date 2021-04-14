@@ -46,10 +46,12 @@ int main(__attribute__ ((__unused__)) int argc,
 
 			contador++;
 			free_strs_array(command);
+
+			if (f_built->builtin_n &&
+				_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
+				break;
 		}
-	} while (char_read != EOF &&
-		!(f_built->builtin_n &&
-			_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
+	} while (char_read != EOF);
 
 	free_list(&env);
 	return (exec_status);
