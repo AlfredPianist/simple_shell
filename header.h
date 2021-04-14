@@ -95,7 +95,7 @@ int _strncmp(char *s1, char *s2, int n);
 char *_strpbrk(char *s, char *accept);
 int _atoi(char *s);
 char *_itoa(int buffsize, char sign, unsigned long int num, char *nums);
-
+char * _substring(char *, int, int);
 /* Builtins */
 int exit_builtin(char **commands, alias_t **alias, list_t **env);
 int env_builtin(char **commands, alias_t **alias, list_t **env);

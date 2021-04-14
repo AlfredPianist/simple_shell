@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 builtin_t *select_bulit(builtin_t *builtins, char *command_name);
+int prompt_line(char *p, char **line);
 
 int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
@@ -9,7 +10,6 @@ int main(__attribute__ ((__unused__)) int argc,
 {
 	char *line = NULL, **command, p[] = "($) ";
 	ssize_t char_read = 0;
-	struct stat stat_buff;
 	int exec_status = 0, contador = 0;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
@@ -48,13 +48,6 @@ int main(__attribute__ ((__unused__)) int argc,
 	exit(exec_status);
 }
 
-list_t pre_parse(char * line)
-{
-	list_t *commands = malloc(sizeof(list_t));
-
-	commands->
-}
-
 builtin_t *select_bulit(builtin_t *builtins, char *command_name)
 {
 	int i;
@@ -74,7 +67,6 @@ int prompt_line(char *p, char **line)
 	{
 		write(STDOUT_FILENO, p, _strlen(p));
 		char_read = get_input_line(line);
-		return (char_read);
 	}
 	/* Non-interactive mode */
 	else
@@ -84,6 +76,7 @@ int prompt_line(char *p, char **line)
 			return (char_read);
 		write(STDOUT_FILENO, p, _strlen(p));
 	}
+	return (char_read);
 }
 
 /*
