@@ -77,7 +77,7 @@ char *new_token(char **line, char *delims);
 
 /* Process */
 int select_exec(char **command, list_t **env, char *, int);
-int execute(char **command, char *);
+int execute(char **command);
 
 /* Memory management */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);

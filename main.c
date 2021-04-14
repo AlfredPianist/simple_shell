@@ -44,13 +44,13 @@ int main(__attribute__ ((__unused__)) int argc,
 				f_built->builtin_f(command, &alias, &env) :
 				select_exec(command, &env, argv[0], contador);
 
-			contador++;
 			free_strs_array(command);
 
 			if (f_built->builtin_n &&
 				_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
 				break;
 		}
+		contador++;
 	} while (char_read != EOF);
 
 	free_list(&env);
