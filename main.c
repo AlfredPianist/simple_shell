@@ -92,7 +92,7 @@ int prompt_line(char *p, char **line)
 		char_read = get_input_line(line);
 		if (char_read == EOF)
 			return (char_read);
-		write(STDOUT_FILENO, p, _strlen(p));
+	/*	write(STDOUT_FILENO, p, _strlen(p)); */
 	}
 	return (char_read);
 }
