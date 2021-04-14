@@ -19,7 +19,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 
 	if (command[0] == 0)
 		return (-1);
-;
+
 	path = parse_line(get_var("PATH", *env), ":\n", NULL);
 
 	for (i = 0; path && path[i]; i++)

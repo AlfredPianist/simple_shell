@@ -9,14 +9,19 @@
  */
 char *get_var(char *var, list_t *list)
 {
-	int i;
+	int i, j;
 	list_t *curr_node;
 
 	curr_node = list;
 	for (i = 0; curr_node; i++)
 	{
-		if (_strncmp(curr_node->str, var, _strlen(var)) == 0)
-			return (curr_node->str + _strlen(var) + 1);
+		for (j = 0; curr_node->str[j] && curr_node->str[j] != '='; j++)
+		;
+
+		if (_strlen(var) == j)
+			if (_strncmp(curr_node->str, var, _strlen(var)) == 0)
+				return (curr_node->str + _strlen(var) + 1);
+
 		curr_node = curr_node->next;
 	}
 
