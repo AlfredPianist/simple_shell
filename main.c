@@ -8,7 +8,7 @@ int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
 	char **environment)
 {
-	char *line = NULL, **command, p[] = "($) ";
+	char *line = NULL, **command, p[] = "#cisfun$ ";
 	ssize_t char_read = 0;
 	int exec_status = 0, contador = 0;
 	list_t *env = copy_env(environment);
