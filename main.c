@@ -1,9 +1,6 @@
 #include "header.h"
 #include <stdlib.h>
 
-builtin_t *select_bulit(builtin_t *builtins, char *command_name);
-int prompt_line(char *p, char **line);
-
 /**
  * main - Entry point of the shell
  * @argc: number of arguments of the program
@@ -21,9 +18,9 @@ int main(__attribute__ ((__unused__)) int argc,
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
 	builtin_t builtins[] = { {"exit", exit_builtin},
-		{"env", env_builtin},
-		{"setenv", setenv_builtin}, {"unsetenv", unsetenv_builtin},
-		{NULL, NULL} }, *f_built = 0;
+				 {"env", env_builtin}, {"setenv", setenv_builtin},
+				 {"unsetenv", unsetenv_builtin}, {NULL, NULL} },
+		*f_built = 0;
 
 	do {
 		char_read = prompt_line(p, &line);

@@ -8,7 +8,6 @@
  * @lineNo: number of lines geted
  * Return: status of the execute
  */
-
 int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 {
 	unsigned int i;
@@ -68,7 +67,7 @@ int execute(char **command)
 		return (1);
 	}
 	else if (child_id == 0)
-	{	
+	{
 		if (execve(command[0], command, NULL) == -1)
 			exit(127);
 	}

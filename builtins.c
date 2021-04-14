@@ -12,11 +12,9 @@ int exit_builtin(__attribute__ ((__unused__)) char **commands,
 		 __attribute__ ((__unused__)) list_t **env)
 {
 	if (commands[1] != NULL)
-	{
-		/* Verificar si se introdujo un número */
 		return (_atoi(commands[1]));
-	}
-	return (1);
+
+	return (0);
 }
 /**
  * help_builtin - display the help file of a command

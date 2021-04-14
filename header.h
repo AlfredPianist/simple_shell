@@ -76,6 +76,8 @@ char *substring(char *line, char *ignore, int len);
 char *new_token(char **line, char *delims);
 
 /* Process */
+builtin_t *select_bulit(builtin_t *builtins, char *command_name);
+int prompt_line(char *p, char **line);
 int select_exec(char **command, list_t **env, char *, int);
 int execute(char **command);
 
