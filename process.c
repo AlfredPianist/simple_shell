@@ -14,8 +14,9 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 	unsigned int i;
 	struct stat stat_buff;
 	char *tmp = NULL, **path = NULL;
-	char *errorMsg, lineNoBuff[10];
-
+/*	char *errorMsg, lineNoBuff[10];*/
+	lineNo = lineNo;
+	
 	if (command[0] == 0)
 		return (-1);
 
@@ -29,21 +30,21 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 		{
 			free(command[0]), free_strs_array(path);
 			command[0] = tmp;
-			return (execute(command));
+			return (execute(command, shellName));
 		}
 		free(tmp);
 	}
 
 	free_strs_array(path);
 
-	if (stat(command[0], &stat_buff) == 0)
-		return (execute(command));
-
+/*	if (stat(command[0], &stat_buff) == 0) */
+	return (execute(command, shellName));
+/*
 	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
 				": ", command[0], " not found\n");
 	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
 	free(errorMsg);
-	return (-1);
+	return (-1);*/
 }
 
 /**
@@ -52,7 +53,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
  *
  * Return: 1 if successful.
  */
-int execute(char **command)
+int execute(char **command, char * shellName)
 {
 	pid_t child_id;
 	int status;
@@ -65,7 +66,7 @@ int execute(char **command)
 	{
 		/* Child process */
 		if (execve(command[0], command, NULL) == -1)
-			perror(command[0]);
+			perror(shellName);
 		/* Nota: liberar memoria aquí */
 		/* exit(EXIT_FAILURE); */
 	}
