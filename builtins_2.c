@@ -2,8 +2,10 @@
 
 /**
  * env_builtin - prints the environment variables.
- * @commands:
- * Return:
+ * @commands: command exit and his params
+ * @alias: list of alias
+ * @env: enviroment of the program
+ * Return: always 1
  */
 int env_builtin(__attribute__ ((__unused__)) char **commands,
 		__attribute__ ((__unused__)) alias_t **alias,
@@ -16,6 +18,8 @@ int env_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * setenv_builtin - create a new variable in environment from shell
  * @commands: command setenv and his params
+ * @alias: list of alias
+ * @env: enviroment of the program
  * Return: -
  */
 int setenv_builtin(__attribute__ ((__unused__)) char **commands,
@@ -33,6 +37,8 @@ int setenv_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * unsetenv_builtin - delete a variable in environment from shell
  * @commands: command setenv and his params
+ * @alias: list of alias
+ * @env: enviroment of the program
  * Return: -
  */
 int unsetenv_builtin(__attribute__ ((__unused__)) char **commands,

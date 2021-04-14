@@ -3,6 +3,8 @@
 /**
  * exit_builtin - close shell
  * @commands: command exit and his params
+ * @alias: list of alias
+ * @env: enviroment of the program
  * Return: status of the exit
 */
 int exit_builtin(__attribute__ ((__unused__)) char **commands,
@@ -19,6 +21,7 @@ int exit_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * help_builtin - display the help file of a command
  * @commands: command help and his params
+ * @env: enviroment of the program
  * Return: -
 */
 int help_builtin(__attribute__ ((__unused__)) char **commands,
@@ -29,6 +32,7 @@ int help_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * history_builtin - display the history file
  * @commands: command history and his params
+ * @env: enviroment of the program
  * Return: -
 */
 int history_builtin(__attribute__ ((__unused__)) char **commands,
@@ -39,6 +43,7 @@ int history_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * cd_builtin - change the current directory of the shell
  * @commands: command cd and his params
+ * @env: enviroment of the program
  * Return: -
 */
 int cd_builtin(__attribute__ ((__unused__)) char **commands,
@@ -49,6 +54,8 @@ int cd_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * alias_builtin - create an alias of a command
  * @commands: command alias and his params
+ * @alias: list of alias
+ * @env: enviroment of the program
  * Return: -
 */
 int alias_builtin(__attribute__ ((__unused__)) char **commands,
@@ -58,10 +65,5 @@ int alias_builtin(__attribute__ ((__unused__)) char **commands,
 	if (!commands[1])
 		print_list_alias(*alias);
 
-	/* if (commands[1] && commands[2]) */
-	/* { */
-	/* 	add_to_list(env, commands[1], commands[2]); */
-	/* 	return (1); */
-	/* } */
 	return (1);
 }

@@ -4,6 +4,13 @@
 builtin_t *select_bulit(builtin_t *builtins, char *command_name);
 int prompt_line(char *p, char **line);
 
+/**
+ * main - Entry point of the shell
+ * @argc: number of arguments of the program
+ * @argv: arguments of the program
+ * @environment: -
+ * Return: status of the program
+ */
 int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
 	char **environment)
@@ -13,10 +20,9 @@ int main(__attribute__ ((__unused__)) int argc,
 	int exec_status = 0, contador = 0;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
-	builtin_t builtins[] = { {"exit", exit_builtin},/*{"help", help_builtin}, */
-	/*	{"history", history_builtin}, */ {"env", env_builtin},
+	builtin_t builtins[] = { {"exit", exit_builtin},
+		{"env", env_builtin},
 		{"setenv", setenv_builtin}, {"unsetenv", unsetenv_builtin},
-	/*	{"cd", cd_builtin}, {"alias", alias_builtin}, */
 		{NULL, NULL} }, *f_built = 0;
 
 	do {
@@ -35,21 +41,27 @@ int main(__attribute__ ((__unused__)) int argc,
 			f_built = select_bulit(builtins, command[0]);
 
 			exec_status = (f_built->builtin_n != NULL) ?
-				f_built->builtin_f(command, &alias, &env):
+				f_built->builtin_f(command, &alias, &env) :
 				select_exec(command, &env, argv[0], contador);
 
 			contador++;
 			free_strs_array(command);
 		}
 	} while (char_read != EOF &&
-		!(f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
+		!(f_built->builtin_n &&
+			_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
 
 	free_list(&env);
-	/* exit(exec_status); */
 	exec_status = 0;
 	return (exec_status);
 }
 
+/**
+ * select_bulit - select the function requested by the user
+ * @builtins: list of functions
+ * @command_name: name of function requested
+ * Return: function requested
+ */
 builtin_t *select_bulit(builtin_t *builtins, char *command_name)
 {
 	int i;
@@ -59,7 +71,12 @@ builtin_t *select_bulit(builtin_t *builtins, char *command_name)
 			return (&builtins[i]);
 	return (&builtins[i]);
 }
-
+/**
+ * prompt_line - display the prompt in line
+ * @p:  prompt to display
+ * @line: line to save the characters in input
+ * Return: number of chars saved, -1 if is EOF
+ */
 int prompt_line(char *p, char **line)
 {
 	int char_read;
@@ -80,19 +97,3 @@ int prompt_line(char *p, char **line)
 	}
 	return (char_read);
 }
-
-/*
- * PENDIENTES:
- * MAÑANA: PATH y env.
- * 1. Builtins env: advanced - (con argumentos), setenv, unsetenv, help,
- *    history, cd y alias.
- * 2. if (malloc == NULL).
- * 3. Manejo de errores adecuado, y exit codes.
-]* 4. getline.
- * 6. Evitar Ctrl-C => SIGNALS.
- * 9. ; && y ||: ampliar parse para setear estas condiciones.
- * 10. alias.
- * 11. reemplazo de variables: $? y $$
- * 12. comentarios (#): ampliar parse para setear esta condición.
- * 15. input a script.
- */

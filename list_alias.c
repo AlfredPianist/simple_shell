@@ -12,6 +12,7 @@
  *              any point in between. add_node_alias will not add a node if
  *              the index is larger than the list's length or if the index
  *              given is not valid.
+ * Return: direction of the new node
  */
 alias_t *add_node_alias(alias_t **head, int idx, char *var, char *val)
 {

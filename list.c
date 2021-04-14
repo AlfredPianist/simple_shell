@@ -10,7 +10,8 @@
  *              the beginning (idx = 0), at the end (idx = -1), or at
  *              any point in between. add_node will not add a node if
  *              the index is larger than the list's length or if the index
- *              given is not valid.
+ *              given is not valid
+ * Return: direction of the new node.
  */
 list_t *add_node(list_t **head, int idx, char *s)
 {

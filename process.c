@@ -1,6 +1,15 @@
 #include "header.h"
 
-int select_exec(char **command, list_t **env, char * shellName, int lineNo)
+/**
+ * select_exec - find and execute a file in or not int path
+ * @command: command to execute
+ * @env: list of enviroment vars
+ * @shellName: name of the program
+ * @lineNo: number of lines geted
+ * Return: status of the execute
+ */
+
+int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 {
 	unsigned int i;
 	struct stat stat_buff;
@@ -29,34 +38,13 @@ int select_exec(char **command, list_t **env, char * shellName, int lineNo)
 
 	if (stat(command[0], &stat_buff) == 0)
 		return (execute(command));
-	
-	errorMsg = nstrcat(6 , shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff), ": ", command[0], " not found\n");
+
+	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
+				": ", command[0], " not found\n");
 	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
 	free(errorMsg);
 	return (-1);
 }
-
-/*
-int _perror(int err, char *command_name)
-{
-	char msg[100];
-	char *errors[] = {
-		"not found",
-		"permision denied"
-	}
-	int errCodes[] = {
-		126,
-		127
-	}
-	_strcat(msg, "[SHELL_NAME]: ");
-	_strcat(msg, "[CONTADOR]: ");
-	_strcat(msg, command_name);
-	_strcat(msg, errors[err]);
-
-	write(STDERR_FILENO, msg , _strlen(msg));
-
-	return (errCodes[err]);
-} */
 
 /**
  * execute - Executes a command on a child process.

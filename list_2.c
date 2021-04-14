@@ -55,10 +55,8 @@ int add_to_list(list_t **list, char *varN, char *varV)
 
 /**
  * del_from_list - Clears a variable from the list.
- * @env: The list.
+ * @list: The list.
  * @varN: The variable's name.
- * @varV: The variable's value.
- *
  * Return: 1 if success, otherwise 0
  */
 int del_from_list(list_t **list, char *varN)
