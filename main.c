@@ -45,8 +45,9 @@ int main(__attribute__ ((__unused__)) int argc,
 		!(f_built->builtin_n && _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0));
 
 	free_list(&env);
-	//exit(exec_status);
-	return (0);
+	/* exit(exec_status); */
+	exec_status = 0;
+	return (exec_status);
 }
 
 builtin_t *select_bulit(builtin_t *builtins, char *command_name)
