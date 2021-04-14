@@ -17,7 +17,7 @@ int main(__attribute__ ((__unused__)) int argc,
 {
 	char *line = NULL, **command, p[] = "#cisfun$ ";
 	ssize_t char_read = 0;
-	int exec_status = 0, contador = 0;
+	int exec_status = 0, contador = 1;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
 	builtin_t builtins[] = { {"exit", exit_builtin},
