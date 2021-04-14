@@ -10,18 +10,17 @@
  */
 int main(__attribute__ ((__unused__)) int argc,
 	 __attribute__ ((__unused__)) char *argv[],
-	char **environment)
+	__attribute__ ((__unused__))char **environment)
 {
 	char *line = NULL, **command, p[] = "#cisfun$ ";
 	ssize_t char_read = 0;
-	int exec_status = 0, contador = 1;
+	int exec_status = 0, contador = 1, prev_exec = 0;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
 	builtin_t builtins[] = { {"exit", exit_builtin},
 				 {"env", env_builtin}, {"setenv", setenv_builtin},
 				 {"unsetenv", unsetenv_builtin}, {NULL, NULL} },
 		*f_built = 0;
-
 	do {
 		char_read = prompt_line(p, &line);
 
@@ -37,7 +36,7 @@ int main(__attribute__ ((__unused__)) int argc,
 		{
 			f_built = select_bulit(builtins, command[0]);
 
-			exec_status = (f_built->builtin_n != NULL) ?
+			prev_exec = (f_built->builtin_n != NULL) ?
 				f_built->builtin_f(command, &alias, &env) :
 				select_exec(command, &env, argv[0], contador);
 
@@ -46,11 +45,15 @@ int main(__attribute__ ((__unused__)) int argc,
 			if (f_built->builtin_n &&
 				_strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
 				break;
+
+			exec_status = prev_exec;
 		}
 		contador++;
 	} while (char_read != EOF);
 
-	free_list(&env);
+	if (env)
+		free_list(&env);
+
 	return (exec_status);
 }
 
