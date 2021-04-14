@@ -107,8 +107,6 @@ int cd_builtin(char **commands, char **env);
 int alias_builtin(char **commands, alias_t **alias, list_t **env);
 
 /* Misc */
-void print_memory_hex(char *buffer, unsigned long int buffer_size);
-void print_parse(char **command);
 void print_parsed_line(char **command);
 
 /* List manipulation (env & history) */

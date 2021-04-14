@@ -1,11 +1,13 @@
 #include "header.h"
 
 /**
- * itoa - convert a integer into a string
- * @num: number
- * @nums: buffer of minimun 12 bytes to storage the number as a string
- * @sign: sing char
- * Return: pointer to first byte of number as a string
+ * _itoa - convert a integer into a string
+ * @buffsize: The size of the buffer.
+ * @sign: The minus sign.
+ * @num: The number to be converted to alpha.
+ * @nums: A buffer of minimun 12 bytes to store  the number as a string.
+ *
+ * Return: A pointer to the first byte of the string.
  */
 char *_itoa(int buffsize, char sign, unsigned long int num, char *nums)
 {
