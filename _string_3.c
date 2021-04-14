@@ -1,5 +1,20 @@
 #include "header.h"
 
+char *_substring(char *s,int start, int trv)
+{
+	char *ss = malloc(sizeof(char) * (trv - start + 1));
+
+	if (!ss)
+		return (0);
+
+	while (start < trv)
+		ss[start] = s[start], start++;
+
+	ss[start] = 0;
+
+	return (ss);
+}
+
 /**
  * _itoa - convert a integer into a string
  * @buffsize: The size of the buffer.
