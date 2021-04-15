@@ -29,7 +29,8 @@ int main(__attribute__ ((__unused__)) int argc,
 	alias_t *alias = NULL;
 	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
 				 {"env", env_builtin}, {"setenv", setenv_builtin},
-				 {"unsetenv", unsetenv_builtin}, {NULL, NULL} }, *f_built = 0;
+				 {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
+				 {NULL, NULL} }, *f_built = 0;
 
 	do {
 		char_read = select_mode(p, &line);
