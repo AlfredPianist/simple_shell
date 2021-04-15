@@ -16,12 +16,14 @@ int exit_builtin(__attribute__ ((__unused__)) char **commands,
 
 	return (0);
 }
+
 /**
  * help_builtin - display the help file of a command
  * @commands: command help and his params
+ * @alias: list of alias
  * @env: enviroment of the program
  * Return: -
-*/
+ */
 int help_builtin(__attribute__ ((__unused__)) char **commands,
 		 __attribute__ ((__unused__)) alias_t **alias,
 		 __attribute__ ((__unused__)) list_t **env)

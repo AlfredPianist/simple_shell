@@ -91,9 +91,8 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 }
 
 /**
- * execute - Executes a command on a child process.
+ * exec - Executes a command on a child process.
  * @command: The argument vector (parsed line).
- * @shellName: name of the actual shell program
  * Return: 1 if successful.
  */
 int exec(char **command)
