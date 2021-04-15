@@ -2,7 +2,7 @@
 This is a simple simulation of command line interpreter for linux using only, vi and emacs, compiled with gcc -Wall -Werror -Wextra -pedantic, gdb and valgrind
 
 ## Flowchart
-![FLOWCHART](http://url/to/img/simple_shell.png)
+![FLOWCHART](https://github.com/AlfredPianist/simple_shell/blob/main/img/simple_shell.png)
 
 ## Setup
 Compile the program using `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`
