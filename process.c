@@ -79,7 +79,8 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 
 	free_strs_array(path);
 
-	if (stat(command[0], &stat_buff) == 0 && access(command[0], F_OK | R_OK | X_OK) != -1)
+	if (stat(command[0], &stat_buff) == 0 &&
+		access(command[0], F_OK | R_OK | X_OK) != -1)
 		return (exec(command));
 
 	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
@@ -91,9 +92,8 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 }
 
 /**
- * execute - Executes a command on a child process.
+ * exec - Executes a command on a child process.
  * @command: The argument vector (parsed line).
- * @shellName: name of the actual shell program
  * Return: 1 if successful.
  */
 int exec(char **command)
