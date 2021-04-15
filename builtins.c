@@ -54,10 +54,16 @@ int history_builtin(__attribute__ ((__unused__)) char **commands,
  * @env: enviroment of the program
  * Return: -
 */
-int cd_builtin(__attribute__ ((__unused__)) char **commands,
-	       __attribute__ ((__unused__)) char **env)
+int cd_builtin(char **commands,
+               __attribute__ ((__unused__)) alias_t **alias,
+                 __attribute__ ((__unused__)) list_t **env)
 {
-	return (1);
+	if (chdir(commands[1]) == -1)
+	{
+		perror("Error cd");
+		return (-1);
+	}
+	return (0);
 }
 /**
  * alias_builtin - create an alias of a command

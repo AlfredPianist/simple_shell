@@ -106,7 +106,7 @@ int setenv_builtin(char **commands, alias_t **alias, list_t **env);
 int unsetenv_builtin(char **commands, alias_t **alias, list_t **env);
 int help_builtin(char **commands, alias_t **alias, list_t **env);
 int history_builtin(char **commands, char **env);
-int cd_builtin(char **commands, char **env);
+int cd_builtin(char **commands, alias_t **alias, list_t **env);
 int alias_builtin(char **commands, alias_t **alias, list_t **env);
 
 /* Help */
