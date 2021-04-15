@@ -109,6 +109,11 @@ int history_builtin(char **commands, char **env);
 int cd_builtin(char **commands, char **env);
 int alias_builtin(char **commands, alias_t **alias, list_t **env);
 
+/* Help */
+int help(char *command);
+int help_2(char *command);
+int help_3(char *command);
+
 /* Misc */
 void print_parsed_line(char **command);
 
