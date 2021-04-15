@@ -1,6 +1,17 @@
 #include "header.h"
 #include <stdlib.h>
 
+void interrup(__attribute__ ((__unused__)) int sign);
+
+/**
+ * prepare - print a string before the main execute
+ */
+
+void __attribute__ ((constructor)) prepare()
+{
+	signal(SIGINT, interrup);
+}
+
 /**
  * main - Entry point of the shell
  * @argc: number of arguments of the program
@@ -50,4 +61,13 @@ int main(__attribute__ ((__unused__)) int argc,
 		free_list(&env);
 
 	return (exec_status);
+}
+
+/**
+ * interrup - function to control the SIGNAL_INT
+ * @sign: signal
+ */
+void interrup(__attribute__ ((__unused__)) int sign)
+{
+	write(STDIN_FILENO, "\n#cisfun$ ", 10);
 }
