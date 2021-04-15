@@ -1,6 +1,48 @@
 #include "header.h"
 
 /**
+ * select_mode - select mode (interactive or non-interactive)
+ * @p:  prompt to display
+ * @line: line to save the characters in input
+ * Return: number of chars saved, -1 if is EOF
+ */
+int select_mode(char *p, char **line)
+{
+	int char_read;
+
+	/* Interactive mode */
+	if (isatty(STDIN_FILENO))
+	{
+		write(STDOUT_FILENO, p, _strlen(p));
+		char_read = get_input_line(line);
+	}
+	/* Non-interactive mode */
+	else
+	{
+		char_read = get_input_line(line);
+		if (char_read == EOF)
+			return (char_read);
+	}
+	return (char_read);
+}
+
+/**
+ * select_built - select the function requested by the user
+ * @builtins: list of functions
+ * @command_name: name of function requested
+ * Return: function requested
+ */
+builtin_t *select_built(builtin_t *builtins, char *command_name)
+{
+	int i;
+
+	for (i = 0; builtins[i].builtin_n != NULL; i++)
+		if (_strcmp(command_name, builtins[i].builtin_n) == 0)
+			return (&builtins[i]);
+	return (&builtins[i]);
+}
+
+/**
  * select_exec - find and execute a file in or not int path
  * @command: command to execute
  * @env: list of enviroment vars
@@ -30,7 +72,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 		{
 			free(command[0]), free_strs_array(path);
 			command[0] = tmp;
-			return (execute(command));
+			return (exec(command));
 		}
 		free(tmp);
 	}
@@ -38,7 +80,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 	free_strs_array(path);
 
 	if (stat(command[0], &stat_buff) == 0)
-		return (execute(command));
+		return (exec(command));
 
 	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
 				": ", command[0], ": not found\n");
@@ -54,7 +96,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
  * @shellName: name of the actual shell program
  * Return: 1 if successful.
  */
-int execute(char **command)
+int exec(char **command)
 {
 	pid_t child_id;
 	int status, code = 0;
