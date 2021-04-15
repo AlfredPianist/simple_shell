@@ -72,7 +72,6 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 		{
 			free(command[0]), free_strs_array(path);
 			command[0] = tmp;
-			printf("execute by path");
 			return (exec(command));
 		}
 		free(tmp);
