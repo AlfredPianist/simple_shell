@@ -103,7 +103,7 @@ list_t *pre_parse(char *l, list_t **controls)
 
 	for (i = 0; l[i]; i++)
 		if (_strncmp(l + i, "&&", 2) == 0 || _strncmp(l + i, "||", 2) == 0
-			|| l[i] == ';' || l[i + 1] == 0 ||  l[i] == '#') 
+			|| l[i] == ';' || l[i + 1] == 0 || _strncmp(l + i, " #", 2) == 0) 
 		{
 			string = _realloc(0, 0, sizeof(char) * (i - k + 1));
 			_strncat(string, l + k, i - k);
@@ -120,7 +120,7 @@ list_t *pre_parse(char *l, list_t **controls)
 				add_node(controls, -1, ";");
 
 			free(string);
-			if (l[i] == '#')
+			if (_strncmp(l + i, " #", 2) == 0)
 				break;
 		}
 	add_node(controls, -1, ";");
