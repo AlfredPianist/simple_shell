@@ -63,7 +63,9 @@ int execute_commands_line(int status, char *line, int *exit_called,
 	commands = pre_parse(line, &op_controls);
 	head_op = op_controls, head_cm = commands;
 
-        do {
+	if (commands)
+	{
+	        do {
                         command = parse_line(commands->str, " \t\r\n", NULL);
                         if (command)
                         {
@@ -84,11 +86,12 @@ int execute_commands_line(int status, char *line, int *exit_called,
 			if ((_strncmp(op_controls->str, "&&", 2) == 0 && exec_status != 0) ||
 				(_strncmp(op_controls->str, "||", 2) == 0 && exec_status == 0))
 				break;
-        } while((commands = commands->next) && (op_controls = op_controls->next));
-
-	free_list(&head_cm);
+	        } while((commands = commands->next) && (op_controls = op_controls->next));
+	
+		free_list(&head_cm);
+	}
 	free_list(&head_op);
-
+	
 	return (exec_status);
 }
 
