@@ -51,7 +51,7 @@ int main(__attribute__ ((__unused__)) int argc,
 int execute_commands_line(int status, char *line, int *exit_called,
 		list_t **env, alias_t **alias, char *shellName, int lineNo)
 {
-	list_t *head = NULL, *commands = NULL, *op_controls = NULL;
+	list_t *head_op = NULL, *head_cm = NULL, *commands = NULL, *op_controls = NULL;
 	int exec_status = status, prev_exec = 0;
 	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
                                  {"env", env_builtin}, {"setenv", setenv_builtin},
@@ -61,7 +61,7 @@ int execute_commands_line(int status, char *line, int *exit_called,
 	char **command = 0;
 	
 	commands = pre_parse(line, &op_controls);
-	head = commands;
+	head_op = op_controls, head_cm = commands;
 
         do {
                         command = parse_line(commands->str, " \t\r\n", NULL);
@@ -86,8 +86,8 @@ int execute_commands_line(int status, char *line, int *exit_called,
 				break;
         } while((commands = commands->next) && (op_controls = op_controls->next));
 
-	if (head)
-		free_list(&head);
+	free_list(&head_cm);
+	free_list(&head_op);
 
 	return (exec_status);
 }
