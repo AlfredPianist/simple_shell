@@ -78,6 +78,8 @@ int execute_commands_line(int status, char *line, int *exit_called,
                                 if (f_built->builtin_n &&
                                         _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
                                 {
+					if (prev_exec != 0)
+						exec_status = prev_exec;
                                         *exit_called = 1;
                                         break;
                                 }
