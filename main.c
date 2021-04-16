@@ -84,6 +84,8 @@ int execute_commands_line(int status, char *line, int *exit_called,
                                 if (f_built->builtin_n &&
                                         _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
                                 {
+					if (prev_exec != 0)
+						exec_status = prev_exec;
                                         *exit_called = 1;
                                         break;
                                 }
@@ -109,7 +111,8 @@ list_t *pre_parse(char *l, list_t **controls)
 
 	for (i = 0; l[i]; i++)
 		if (_strncmp(l + i, "&&", 2) == 0 || _strncmp(l + i, "||", 2) == 0
-			|| l[i] == ';' || l[i + 1] == 0 || _strncmp(l + i, " #", 2) == 0) 
+			|| l[i] == ';' || l[i + 1] == 0 || _strncmp(l + i, " #", 2) == 0
+			|| (l[i] == '#' && i == 0 )) 
 		{
 			string = _realloc(0, 0, sizeof(char) * (i - k + 1));
 			_strncat(string, l + k, i - k);
@@ -126,7 +129,7 @@ list_t *pre_parse(char *l, list_t **controls)
 				add_node(controls, -1, ";");
 
 			free(string);
-			if (_strncmp(l + i, " #", 2) == 0)
+			if (_strncmp(l + i, " #", 2) == 0 || (l[i] == '#' && i == 0 ))
 				break;
 		}
 	add_node(controls, -1, ";");
