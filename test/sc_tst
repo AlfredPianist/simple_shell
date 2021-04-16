@@ -1,5 +1,0 @@
-ls && pwd
-ls -la || pwd #esto es un comentario
-pwd && ls || env
-ls;pwd
-ls #esto tambien es un comentario ;pwd
