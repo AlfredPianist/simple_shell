@@ -32,6 +32,12 @@ int main(__attribute__ ((__unused__)) int argc,
 				 {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
 				 {NULL, NULL} }, *f_built = 0;
 
+	line = getcwd(NULL, 0);
+	if (line == NULL)
+		perror("Error");
+	else
+		add_to_list(&env, "OLDPWD", line), free(line);
+
 	do {
 		char_read = select_mode(p, &line);
 		if (char_read == EOF)
