@@ -3,7 +3,8 @@
 
 void interrup(__attribute__ ((__unused__)) int sign);
 list_t *pre_parse(char *, list_t **);
-
+int execute_commands_line(char *line, int *exit_called,
+                list_t **env, alias_t **alias, char *shellName, int lineNo);
 /**
  * prepare - print a string before the main execute
  */
@@ -27,10 +28,6 @@ int main(__attribute__ ((__unused__)) int argc,
 	int char_read = 0, status = 0, contador = 1, exit_called = 0;
 	list_t *env = copy_env(environment);
 	alias_t *alias = NULL;
-	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
-				 {"env", env_builtin}, {"setenv", setenv_builtin},
-				 {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
-				 {NULL, NULL} };
 
 	do {
 		char_read = select_mode(p, &line);
@@ -39,15 +36,7 @@ int main(__attribute__ ((__unused__)) int argc,
 			free(line);
 			break;
 		}
-//		printf("line:%s\n", line);
-		
-//		control_operators = get_line_control_op(line);
-//		print_list(control_operators);
-//		print_list(commands);
-//		nombre de la funcion(line)
-
-		status = execute_commands_line(&builtins, line, &exit_called,
-				&env, &alias, argv[0], contador);
+		status = execute_commands_line(line, &exit_called, &env, &alias, argv[0], contador);
 		free(line);
 
 		contador++;
@@ -59,18 +48,20 @@ int main(__attribute__ ((__unused__)) int argc,
 	return (status);
 }
 
-int execute_commands_line(builtin_t *builtins, char *line, int *exit_called,
+int execute_commands_line(char *line, int *exit_called,
 		list_t **env, alias_t **alias, char *shellName, int lineNo)
 {
 	list_t *head = NULL, *commands = NULL, *op_controls = NULL;
 	int exec_status = 0, prev_exec = 0;
-        builtin_t *f_built = 0;
+	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
+                                 {"env", env_builtin}, {"setenv", setenv_builtin},
+                                 {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
+                                 {NULL, NULL} };
+	builtin_t *f_built = 0;
 	char **command = 0;
-
+	
 	commands = pre_parse(line, &op_controls);
 	head = commands;
-
-//	print_list(op_controls);
 
         do {
                         command = parse_line(commands->str, " \t\r\n", NULL);
@@ -90,8 +81,6 @@ int execute_commands_line(builtin_t *builtins, char *line, int *exit_called,
                                 }
                                 exec_status = prev_exec;
                         }
-	//		printf("exec_status : %i\n", exec_status);
-
 			if ((_strncmp(op_controls->str, "&&", 2) == 0 && exec_status != 0) ||
 				(_strncmp(op_controls->str, "||", 2) == 0 && exec_status == 0))
 				break;
