@@ -3,7 +3,7 @@
 
 void interrup(__attribute__ ((__unused__)) int sign);
 list_t *pre_parse(char *, list_t **);
-int execute_commands_line(char *line, int *exit_called,
+int execute_commands_line(int status, char *line, int *exit_called,
                 list_t **env, alias_t **alias, char *shellName, int lineNo);
 /**
  * prepare - print a string before the main execute
@@ -36,7 +36,7 @@ int main(__attribute__ ((__unused__)) int argc,
 			free(line);
 			break;
 		}
-		status = execute_commands_line(line, &exit_called, &env, &alias, argv[0], contador);
+		status = execute_commands_line(status, line, &exit_called, &env, &alias, argv[0], contador);
 		free(line);
 
 		contador++;
@@ -48,11 +48,11 @@ int main(__attribute__ ((__unused__)) int argc,
 	return (status);
 }
 
-int execute_commands_line(char *line, int *exit_called,
+int execute_commands_line(int status, char *line, int *exit_called,
 		list_t **env, alias_t **alias, char *shellName, int lineNo)
 {
 	list_t *head = NULL, *commands = NULL, *op_controls = NULL;
-	int exec_status = 0, prev_exec = 0;
+	int exec_status = status, prev_exec = 0;
 	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
                                  {"env", env_builtin}, {"setenv", setenv_builtin},
                                  {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
