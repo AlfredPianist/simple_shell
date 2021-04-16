@@ -68,6 +68,7 @@ typedef struct builtin_s
 
 /* Input */
 int get_input_line(char **line);
+list_t *pre_parse(char *l, list_t **controls);
 char **parse_line(char *line, char *delims, char *ignore);
 int is_delim(char curr_char, char *delims);
 int count_tokens(char *line, char *delims, char *ignore);
@@ -80,6 +81,7 @@ builtin_t *select_built(builtin_t *builtins, char *command_name);
 int select_mode(char *p, char **line);
 int select_exec(char **command, list_t **env, char *shellName, int lineNo);
 int exec(char **command);
+int exit_caller(int prev_exec, char *shellName, int lineNo, char **command);
 
 /* Memory management */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -113,9 +115,6 @@ int alias_builtin(char **commands, alias_t **alias, list_t **env);
 int help(char *command);
 int help_2(char *command);
 int help_3(char *command);
-
-/* Misc */
-void print_parsed_line(char **command);
 
 /* List manipulation (env & history) */
 list_t *add_node(list_t **head, int idx, char *s);

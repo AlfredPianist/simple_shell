@@ -27,6 +27,60 @@ int select_mode(char *p, char **line)
 }
 
 /**
+ * execute_commands_line - parse and execute commands taken from get_line..
+ * @status: The exit code from each function.
+ * @line: The line of commands to be parsed.
+ * @exit_called: A sentinel of the exit command.
+ * @env: The environment list.
+ * @alias: The alias list.
+ * @shellName: The name of the shell.
+ * @lineNo: The line number.
+ *
+ * Return: The exec_status of the called function
+ */
+int execute_commands_line(int status, char *line, int *exit_called,
+		list_t **env, alias_t **alias, char *shellName, int lineNo)
+{
+	list_t *head_op = NULL, *head_cm = NULL,
+		*commands = NULL, *op_controls = NULL;
+	int exec_status = status, prev_exec = 0;
+	builtin_t builtins[] = { {"exit", exit_builtin}, {"help", help_builtin},
+				 {"env", env_builtin}, {"setenv", setenv_builtin},
+				 {"unsetenv", unsetenv_builtin}, {"cd", cd_builtin},
+				 {NULL, NULL} }, *f_built = 0;
+	char **command = 0;
+
+	commands = pre_parse(line, &op_controls);
+	head_op = op_controls, head_cm = commands;
+	if (commands)
+	{
+		do {
+			command = parse_line(commands->str, " \t\r\n", NULL);
+			if (command)
+			{
+				f_built = select_built(builtins, command[0]);
+				prev_exec = (f_built->builtin_n != NULL) ?
+					f_built->builtin_f(command, alias, env) :
+					select_exec(command, env, shellName, lineNo);
+				if (f_built->builtin_n &&
+				    _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
+				{
+					exit_caller(prev_exec, shellName, lineNo, command), *exit_called = 1;
+					break;
+				}
+				exec_status = prev_exec, free_strs_array(command);
+			}
+			if ((_strncmp(op_controls->str, "&&", 2) == 0 && exec_status != 0) ||
+			    (_strncmp(op_controls->str, "||", 2) == 0 && exec_status == 0))
+				break;
+		} while ((commands = commands->next) && (op_controls = op_controls->next));
+		free_list(&head_cm);
+	}
+	free_list(&head_op);
+	return (exec_status);
+}
+
+/**
  * select_built - select the function requested by the user
  * @builtins: list of functions
  * @command_name: name of function requested
@@ -64,7 +118,8 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 
 	path = parse_line(get_var("PATH", *env), ":\n", NULL);
 
-	for (i = 0; path && path[i] && command[0][0] != '/' && command[0][0] != '.' ; i++)
+	for (i = 0; path && path[i] && command[0][0] != '/'
+		    && command[0][0] != '.' ; i++)
 	{
 		tmp = nstrcat(3, path[i], "/", command[0]);
 
@@ -81,11 +136,11 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 
 	if (stat(command[0], &stat_buff) == 0 &&
 		access(command[0], F_OK | R_OK | X_OK) != -1 &&
-		(command[0][0] == '.' || command[0][0] == '/' ))
+		(command[0][0] == '.' || command[0][0] == '/'))
 		return (exec(command));
 
 	errorMsg = nstrcat(6, shellName, ": ", _itoa(10, 1, lineNo, lineNoBuff),
-				": ", command[0], ": not found\n");
+			   ": ", command[0], ": not found\n");
 	write(STDERR_FILENO, errorMsg, _strlen(errorMsg));
 	free(errorMsg);
 
