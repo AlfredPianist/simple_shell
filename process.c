@@ -65,7 +65,7 @@ int select_exec(char **command, list_t **env, char *shellName, int lineNo)
 	path = parse_line(get_var("PATH", *env), ":\n", NULL);
 
 	for (i = 0; path && path[i] && command[0][0] != '/'
-		    && command[0][0] != '.' ; i++)
+		     && command[0][0] != '.' ; i++)
 	{
 		tmp = nstrcat(3, path[i], "/", command[0]);
 
