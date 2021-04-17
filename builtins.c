@@ -83,12 +83,13 @@ int history_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * cd_builtin - change the current directory of the shell
  * @commands: command cd and his params
+ * @alias: The alias list
  * @env: enviroment of the program
  * Return: -
 */
 int cd_builtin(char **commands,
-               __attribute__ ((__unused__)) alias_t **alias,
-                 __attribute__ ((__unused__)) list_t **env)
+	       __attribute__ ((__unused__)) alias_t **alias,
+	       __attribute__ ((__unused__)) list_t **env)
 {
 	if (chdir(commands[1]) == -1)
 	{
