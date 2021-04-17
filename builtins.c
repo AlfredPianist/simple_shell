@@ -52,7 +52,7 @@ int history_builtin(__attribute__ ((__unused__)) char **commands,
 /**
  * cd_builtin - change the current directory of the shell
  * @commands: command cd and his params
- * @alias: the alias list
+ * @alias: The alias list
  * @env: enviroment of the program
  * Return: -
 */
