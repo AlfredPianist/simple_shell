@@ -19,47 +19,6 @@ int get_input_line(char **line)
 }
 
 /**
- * pre_parse - Prepare line for the parse_line function (create commands)
- *             based on operator controls &&, ||, ; and comments (#)
- * @l: The line to be operated.
- * @controls: The operator controls list to add each operator control.
- *
- * Return: The list of commands.
- */
-list_t *pre_parse(char *l, list_t **controls)
-{
-	int i = 0, k = 0;
-	list_t *result = 0;
-	char *string = 0;
-
-	for (i = 0; l[i]; i++)
-		if (_strncmp(l + i, "&&", 2) == 0 || _strncmp(l + i, "||", 2) == 0
-			|| l[i] == ';' || l[i + 1] == 0 || _strncmp(l + i, " #", 2) == 0
-			|| (l[i] == '#' && i == 0))
-		{
-			string = _realloc(0, 0, sizeof(char) * (i - k + 1));
-			_strncat(string, l + k, i - k);
-			k = l[i] == ';' ? i + 1 : i + 2;
-
-			if (string && *string)
-				add_node(&result, -1, string);
-
-			if (_strncmp(l + i, "&&", 2) == 0)
-				add_node(controls, -1, "&&");
-			else if (_strncmp(l + i, "||", 2) == 0)
-				add_node(controls, -1, "||");
-			else if (l[i] == ';')
-				add_node(controls, -1, ";");
-
-			free(string);
-			if (_strncmp(l + i, " #", 2) == 0 || (l[i] == '#' && i == 0))
-				break;
-		}
-	add_node(controls, -1, ";");
-	return (result);
-}
-
-/**
  * parse_line - Parses a sentence into tokens.
  * @line: The input line stored.
  * @delims: The array of delimiters.

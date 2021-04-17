@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void interrup(__attribute__ ((__unused__)) int sign);
-list_t *pre_parse(char *, list_t **);
+list_t *pre_parse(char *l, list_t **controls);
 int execute_commands_line(int status, char *line, int *exit_called,
 			  list_t **env, alias_t **alias, char *shellName, int lineNo);
 /**
