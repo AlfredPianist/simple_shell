@@ -65,7 +65,9 @@ int execute_commands_line(int status, char *line, int *exit_called,
 				if (f_built->builtin_n &&
 				    _strcmp(builtins[0].builtin_n, f_built->builtin_n) == 0)
 				{
-					exit_caller(prev_exec, shellName, lineNo, command), *exit_called = 1;
+					if (prev_exec != 0)
+						exec_status = prev_exec;
+					*exit_called = 1;
 					break;
 				}
 				exec_status = prev_exec, free_strs_array(command);
